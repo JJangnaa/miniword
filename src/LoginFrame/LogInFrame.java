@@ -3,22 +3,30 @@ package LoginFrame;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class LogInFrame extends JFrame {
 	
+	// 회원가입 다이얼로그 객체 생성
+	private JoinDialog join;
+	
 	// 네이밍 배열
 	private String [] nameStr = {"ID", "PW", "LogIn", "search for id/pw", "Join"};
-	// ID 및 PW 배열
+	// ID 및 PW Label 배열
 	private JLabel [] logLabel = new JLabel[2];
-	private JTextField [] logTxt = new JTextField[2];
 	// BUTTON 배열
 	private JButton [] logBtn = new JButton[3];
+	// ID 및 PW 입력 필드 
+	private JTextField idTxt = new JTextField(10);
+	private JPasswordField pwTxt = new JPasswordField(10);
 	
 	// 지정 FONT
 	private Font sanserifNormal = new Font("SanSerif", Font.BOLD, 40);
@@ -37,22 +45,28 @@ public class LogInFrame extends JFrame {
 		c.setLayout(null);
 		c.setBackground(lightGray);
 		
+		// 회원가입 다이얼로그 매개변수 입력.
+		join = new JoinDialog(this, "Join");
+		
 		// 네이밍 및 폰트 설정
 		for(int i=0; i<nameStr.length; i++) {
 			if(i<2) {	// ID 및 PW 라벨 설정 & 컨테이너 부착
-				logTxt[i] = new JTextField(10);
+				idTxt.setFont(new Font("SanSerif", Font.BOLD, 30));
+				pwTxt.setFont(new Font("SanSerif", Font.BOLD, 30));
 				logLabel[i] = new JLabel(nameStr[i]);
 				logLabel[i].setFont(sanserifNormal);
 				logLabel[i].setForeground(darkGray);
 				if(i==0) {
-					logTxt[i].setBounds(115, 155, 210, 40);
+					idTxt.setBounds(115, 155, 210, 40);
 					logLabel[i].setBounds(40, 155, 40, 40);
+					c.add(logLabel[i]);
+					c.add(idTxt);
 				} else if(i==1) {
-					logTxt[i].setBounds(115, 225, 210, 40);
+					pwTxt.setBounds(115, 225, 210, 40);
 					logLabel[i].setBounds(25, 220, 90, 40);
+					c.add(logLabel[i]);
+					c.add(pwTxt);
 				}
-				c.add(logLabel[i]);
-				c.add(logTxt[i]);
 			} else if(i>1) {	// BUTTON 설정 & 컨테이너 부착
 				int index = 0;
 				logBtn[index] = new JButton(nameStr[i]);
@@ -60,11 +74,20 @@ public class LogInFrame extends JFrame {
 				logBtn[index].setBackground(darkGray);
 				logBtn[index].setForeground(Color.white);
 				if(i==2) {
-					logBtn[index].setBounds(350, 170, 110, 80);
+					logBtn[index].setBounds(350, 170, 110, 80);	 // 로그인 버튼
 				} else if(i==3) {
-					logBtn[index].setBounds(30, 300, 230, 30);
+					logBtn[index].setBounds(30, 300, 230, 30);	// ID 및 PW 찾기 버튼
 				} else if(i==4) {
-					logBtn[index].setBounds(300, 300, 150, 30);
+					logBtn[index].setBounds(300, 300, 150, 30);	// 회원가입 버튼
+					logBtn[index].addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							join.setVisible(true);
+						}
+						
+					});
 				}
 				c.add(logBtn[index]);
 				index++;
