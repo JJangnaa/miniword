@@ -38,6 +38,7 @@ public class LogInFrame extends JFrame {
 	private ImageIcon bulbImage = new ImageIcon("images/bulb.png");
 	private JLabel bulbImgLabel = new JLabel(bulbImage);
 	
+	
 	public LogInFrame() {
 		setTitle("MiniWord_LogIn");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

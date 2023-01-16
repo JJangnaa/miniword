@@ -40,6 +40,8 @@ public class JoinDialog extends JDialog {
 	private Color darkGray = new Color(127, 127, 127);
 	private Color lightGray = new Color(242, 242, 242);
 	
+	private ButtonClickListener listener = new ButtonClickListener();
+	
 	public JoinDialog (JFrame frame, String title) {
 		super(frame, title, true);
 		Container c = getContentPane();
@@ -61,6 +63,7 @@ public class JoinDialog extends JDialog {
 					
 					if(i==1 || i==2) {
 						joinTxt[i-1].setBounds(widthNx, y, widthNx+50, txtHeight);
+						joinTxt[i-1].addKeyListener(listener);
 					} else if(i==3||i==4) {
 						joinTxt[i-1].setBounds(pwTxtX += pwTxtTmpX, 420, 68, txtHeight);
 						joinTxt[i-1].setHorizontalAlignment(JTextField.CENTER);
@@ -126,7 +129,7 @@ public class JoinDialog extends JDialog {
 		setLocation(700, 300);
 		setSize(600, 600);
 		setResizable(true);
-//		setVisible(true);
+		setVisible(true);
 	}
 	
 
