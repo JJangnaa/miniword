@@ -40,7 +40,8 @@ public class JoinDialog extends JDialog {
 	private Color darkGray = new Color(127, 127, 127);
 	private Color lightGray = new Color(242, 242, 242);
 	
-	private ButtonClickListener listener = new ButtonClickListener();
+	// 리스너 객체 생성
+	private ButtonClickListener listener = new ButtonClickListener(joinTxt, joinBtn);
 	
 	public JoinDialog (JFrame frame, String title) {
 		super(frame, title, true);
@@ -61,10 +62,10 @@ public class JoinDialog extends JDialog {
 					joinTxt[i-1].setFont(sanserifNormal);
 					joinTxt[i-1].setForeground(darkGray);
 					
-					if(i==1 || i==2) {
+					if(i==1 || i==2) {	// Name 및 ID 텍스트필드
 						joinTxt[i-1].setBounds(widthNx, y, widthNx+50, txtHeight);
-						joinTxt[i-1].addKeyListener(listener);
-					} else if(i==3||i==4) {
+						joinTxt[i-1].addKeyListener(listener);	// 리스너
+					} else if(i==3||i==4) {	// Phone 1~2 텍스트필드 및 Pw & check 패스워드필드
 						joinTxt[i-1].setBounds(pwTxtX += pwTxtTmpX, 420, 68, txtHeight);
 						joinTxt[i-1].setHorizontalAlignment(JTextField.CENTER);
 						pwTxtTmpX += pwTxtPlusX;
@@ -75,7 +76,7 @@ public class JoinDialog extends JDialog {
 						pwJoinTxt[i-3].setBounds(widthNx, y, widthNx+50, txtHeight);
 						c.add(pwJoinTxt[i-3]);
 					} else if(i==5) {
-						
+						// Phone 3번째 텍스트 필드 
 						joinTxt[i-1].setBounds(pwTxtX += pwTxtPlusX, 420, 68, txtHeight);
 						joinTxt[i-1].setHorizontalAlignment(JTextField.CENTER);
 						// y 값 초기화
@@ -94,6 +95,7 @@ public class JoinDialog extends JDialog {
 				if(i<9) {
 					joinBtn[index].setBackground(darkGray);
 					joinBtn[index].setBounds((widthNx*2)+70, y += 70, 150, 30);
+					joinBtn[index].addActionListener(listener);
 				} else if(i==9) {
 					noticeLabel.setFont(new Font("SanSerif", Font.BOLD, 12));
 					noticeLabel.setForeground(darkGray);
@@ -123,7 +125,6 @@ public class JoinDialog extends JDialog {
 				index++;
 			}
 		}
-		
 		c.add(new JLabel("* 필수 작성"));
 		
 		setLocation(700, 300);
