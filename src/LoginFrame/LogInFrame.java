@@ -38,6 +38,8 @@ public class LogInFrame extends JFrame {
 	private ImageIcon bulbImage = new ImageIcon("images/bulb.png");
 	private JLabel bulbImgLabel = new JLabel(bulbImage);
 	
+	// 로그인 리스너
+	private LogInListener listener = new LogInListener(idTxt, pwTxt);
 	
 	public LogInFrame() {
 		setTitle("MiniWord_LogIn");
@@ -80,15 +82,7 @@ public class LogInFrame extends JFrame {
 					logBtn[index].setBounds(30, 300, 230, 30);	// ID 및 PW 찾기 버튼
 				} else if(i==4) {
 					logBtn[index].setBounds(300, 300, 150, 30);	// 회원가입 버튼
-					logBtn[index].addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
-							join.setVisible(true);
-						}
-						
-					});
+					logBtn[index].addActionListener(listener);
 				}
 				c.add(logBtn[index]);
 				index++;
