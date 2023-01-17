@@ -2,15 +2,20 @@ package LoginFrame;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 // memberDB
 public class DB {
 	
 	Connection conn;
 	Statement stmt;
+	PreparedStatement pstmt;
 	ResultSet srs;
 	String res = null;
 	String result;
@@ -22,6 +27,7 @@ public class DB {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/miniworddb", "root", "test123");
 //			System.out.println("DB 연결 완료");
 			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement("insert into member values(?, ?, ?, ?, ?)");
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -52,6 +58,7 @@ public class DB {
 	}
 	
 	// 목적 : 해당 메소드 호출 시 DB에 데이터 값 입력.
+	// first
 	public void insertValue(String col, String value) {
 		try {
 			stmt.executeUpdate("insert into member (" + col + ") values ('" + value + "');");
@@ -63,6 +70,26 @@ public class DB {
 		}
 	}
 	
+	public void firstValue(JTextField [] firTxt, JPasswordField [] firPw) {
+		String pw = new String(firPw[0].getPassword());
+		try {
+			for(int i=1; i<6; i++) {
+				if(i<3) {
+					pstmt.setString(i, firTxt[i-1].getText());
+				} else if(i==3) {
+					pstmt.setString(i, pw);
+				} else if(i==4){
+					pstmt.setString(i, "010"+firTxt[i-1].getText()+""+firTxt[i].getText());
+				} else {
+					pstmt.setInt(i, 0);
+				}
+			} 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	// edit
 	public void updateValue(String col, String value, String col2, String value2) {
 		try {
 			stmt.executeUpdate("update member set " + col + " = '" + value + "' where " + col2 + " = '"+ value2 +"'");
@@ -77,6 +104,5 @@ public class DB {
 //		DB db = new DB();
 //		String a = db.memberSurf("name", "관리자");
 //		System.out.println(a);
-//		
 //	}
 }

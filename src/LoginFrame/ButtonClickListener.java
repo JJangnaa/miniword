@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class ButtonClickListener extends KeyAdapter implements ActionListener{
@@ -17,11 +18,13 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 	private String res;
 	private int yesNo;
 	private JTextField [] repTxt;
+	private JPasswordField [] repPw;
 	private JButton [] repBtn;
 	
-	public ButtonClickListener(JTextField [] repTxt, JButton[] repBtn){
+	public ButtonClickListener(JTextField [] repTxt, JButton[] repBtn, JPasswordField [] repPw){
 		this.repBtn = repBtn;
 		this.repTxt = repTxt;
+		this.repPw = repPw;
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -40,13 +43,16 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 							repTxt[0].setText("");
 						} else if (res == null){
 							yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 name 입니다.\n입력하신 name을 사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
-							if(yesNo == JOptionPane.YES_OPTION) {
-								repDB.insertValue("name", repTxt[0].getText());
-								repTxt[0].setEnabled(false);
-								repBtn[1].setEnabled(false);
-							} else {
+							if(yesNo == JOptionPane.NO_OPTION) {
 								repTxt[0].setText("");
 							}
+//							if(yesNo == JOptionPane.YES_OPTION) {
+//								repDB.insertValue("name", repTxt[0].getText());
+//								repTxt[0].setEditable(false);
+////								repBtn[1].setEnabled(false);
+//							} else {
+//								repTxt[0].setText("");
+//							}
 						}
 					}
 				} catch (SQLException e1) {
@@ -66,13 +72,16 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 							repTxt[1].setText("");
 						} else if (res == null){
 							yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 id 입니다.\n입력하신 id를 사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
-							if(yesNo == JOptionPane.YES_OPTION) {
-								repTxt[1].setEnabled(false);
-								repBtn[2].setEnabled(false);
-								repDB.updateValue("id", this.repTxt[1].getText(), "name", this.repTxt[0].getText());
-							} else {
+							if(yesNo == JOptionPane.NO_OPTION) {
 								repTxt[1].setText("");
 							}
+//							if(yesNo == JOptionPane.YES_OPTION) {
+//								repTxt[1].setEditable(false);
+////								repBtn[2].setEnabled(false);
+//								repDB.updateValue("id", this.repTxt[1].getText(), "name", this.repTxt[0].getText());
+//							} else {
+//								repTxt[1].setText("");
+//							}
 						}
 					}
 				} catch (SQLException e1) {
@@ -101,13 +110,16 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 						this.repTxt[0].setText("");
 					} else if (res == null){
 						yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 name 입니다.\n입력하신 name을 사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
-						if(yesNo == JOptionPane.YES_OPTION) {
-							repTxt[0].setEnabled(false);
-							btn.setEnabled(false);
-							repDB.insertValue("name", this.repTxt[0].getText());
-						} else {
+						if(yesNo == JOptionPane.NO_OPTION) {
 							this.repTxt[0].setText("");
 						}
+//						if(yesNo == JOptionPane.YES_OPTION) {
+//							repTxt[0].setEditable(false);
+////							btn.setEnabled(false);
+//							repDB.insertValue("name", this.repTxt[0].getText());
+//						} else {
+//							this.repTxt[0].setText("");
+//						}
 					}
 				}
 			} catch (SQLException e1) {
@@ -126,18 +138,27 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 						this.repTxt[1].setText("");
 					} else if (res == null){
 						yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 id 입니다.\n입력하신 id를 사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
-						if(yesNo == JOptionPane.YES_OPTION) {
-							repTxt[1].setEnabled(false);
-							btn.setEnabled(false);
-							repDB.updateValue("id", this.repTxt[1].getText(), "name", this.repTxt[0].getText());
-						} else {
+						if(yesNo == JOptionPane.NO_OPTION) {
 							this.repTxt[1].setText("");
 						}
+//						if(yesNo == JOptionPane.YES_OPTION) {
+//							repTxt[1].setEditable(false);
+////							btn.setEnabled(false);
+//							repDB.updateValue("id", this.repTxt[1].getText(), "name", this.repTxt[0].getText());
+//						} else {
+//							this.repTxt[1].setText("");
+//						}
 					}
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
+		} else if(e.getActionCommand() == "JOIN") {
+			yesNo = JOptionPane.showConfirmDialog(null, "입력한 정보로 회원가입 하시겠습니까?", "", JOptionPane.YES_NO_OPTION);
+			if(yesNo == JOptionPane.YES_OPTION) {
+				
+				repDB.firstValue(repTxt, repPw);
+			} 
 		}
 	}
 

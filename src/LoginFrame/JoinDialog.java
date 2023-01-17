@@ -31,8 +31,9 @@ public class JoinDialog extends JDialog {
 	// 버튼 배열
 	private JButton [] joinBtn = new JButton[4];
 	// 안내문구 라벨
-	private JLabel noticeLabel = new JLabel("* 필수 작성");
+	private JLabel pwNotiLabel = new JLabel("영문+특수문자+숫자 8자↑");
 	private JLabel warnLabel = new JLabel(">> 비밀번호 확인");
+	private JLabel noticeLabel = new JLabel("* 필수 작성");
 	
 	// 지정 FONT
 	private Font sanserifNormal = new Font("SanSerif", Font.BOLD, 25);
@@ -41,7 +42,9 @@ public class JoinDialog extends JDialog {
 	private Color lightGray = new Color(242, 242, 242);
 	
 	// 리스너 객체 생성
-	private ButtonClickListener listener = new ButtonClickListener(joinTxt, joinBtn);
+	private ButtonClickListener listener = new ButtonClickListener(joinTxt, joinBtn, pwJoinTxt);
+	private PwListener pwListener = new PwListener(pwJoinTxt, joinTxt, warnLabel);
+	private PhoneListener phoneListener = new PhoneListener(joinTxt);
 	
 	public JoinDialog (JFrame frame, String title) {
 		super(frame, title, true);
@@ -65,20 +68,23 @@ public class JoinDialog extends JDialog {
 					if(i==1 || i==2) {	// Name 및 ID 텍스트필드
 						joinTxt[i-1].setBounds(widthNx, y, widthNx+50, txtHeight);
 						joinTxt[i-1].addKeyListener(listener);	// 리스너
-					} else if(i==3||i==4) {	// Phone 1~2 텍스트필드 및 Pw & check 패스워드필드
+					} else if(i==3||i==4) {	
+						// Phone 1~2 텍스트필드
 						joinTxt[i-1].setBounds(pwTxtX += pwTxtTmpX, 420, 68, txtHeight);
 						joinTxt[i-1].setHorizontalAlignment(JTextField.CENTER);
 						pwTxtTmpX += pwTxtPlusX;
-						
+						// Pw & check 패스워드필드
 						pwJoinTxt[i-3] = new JPasswordField(10);
 						pwJoinTxt[i-3].setFont(sanserifNormal);
 						pwJoinTxt[i-3].setForeground(darkGray);
 						pwJoinTxt[i-3].setBounds(widthNx, y, widthNx+50, txtHeight);
+						pwJoinTxt[i-3].addKeyListener(pwListener);
 						c.add(pwJoinTxt[i-3]);
 					} else if(i==5) {
 						// Phone 3번째 텍스트 필드 
 						joinTxt[i-1].setBounds(pwTxtX += pwTxtPlusX, 420, 68, txtHeight);
 						joinTxt[i-1].setHorizontalAlignment(JTextField.CENTER);
+						
 						// y 값 초기화
 						y=0;
 					}
@@ -93,39 +99,41 @@ public class JoinDialog extends JDialog {
 				joinBtn[index].setForeground(Color.WHITE);
 				
 				if(i<9) {
+					// select, 중복확인, ID 중복확인 버튼
 					joinBtn[index].setBackground(darkGray);
 					joinBtn[index].setBounds((widthNx*2)+70, y += 70, 150, 30);
 					joinBtn[index].addActionListener(listener);
 				} else if(i==9) {
+					// 필수작성 텍스트라벨
 					noticeLabel.setFont(new Font("SanSerif", Font.BOLD, 12));
 					noticeLabel.setForeground(darkGray);
 					noticeLabel.setBounds(270, 470, 100, 20);
 					c.add(noticeLabel);
-					
+					// 비밀번호 확인 텍스트 라벨
 					warnLabel.setFont(new Font("SanSerif", Font.BOLD, 12));
 					warnLabel.setForeground(darkGray);
 					warnLabel.setBounds((widthNx*2)+70, 360, 150, 20);
 					c.add(warnLabel);
-					
+					// JOIN 버튼
 					joinBtn[index].setBackground(new Color(0, 32, 96));
 					joinBtn[index].setBounds(225, 500, 150, 30);
-					joinBtn[index].addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
-							setVisible(false);
-//							if(joinTxt[0].getHorizontalVisibility() != null)
-						}
-						
-					});
+					joinBtn[index].addActionListener(listener);
+					
 				}
 				
 				c.add(joinBtn[index]);
 				index++;
 			}
 		}
-		c.add(new JLabel("* 필수 작성"));
+		joinTxt[2].setText("010");
+		joinTxt[2].setEditable(false);
+		joinTxt[3].addKeyListener(phoneListener);
+		joinTxt[4].addKeyListener(phoneListener);
+		
+		pwNotiLabel.setFont(new Font("SanSerif", Font.BOLD, 12));
+		pwNotiLabel.setForeground(darkGray);
+		pwNotiLabel.setBounds((widthNx*2)+70, 290, 150, 20);
+		c.add(pwNotiLabel);
 		
 		setLocation(700, 300);
 		setSize(600, 600);
