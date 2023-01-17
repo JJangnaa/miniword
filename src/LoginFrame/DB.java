@@ -17,8 +17,9 @@ public class DB {
 	Statement stmt;
 	PreparedStatement pstmt;
 	ResultSet srs;
+	String sql;
 	String res = null;
-	String result;
+	int result;
 	
 	public DB() {
 		
@@ -27,7 +28,7 @@ public class DB {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/miniworddb", "root", "test123");
 //			System.out.println("DB 연결 완료");
 			stmt = conn.createStatement();
-			pstmt = conn.prepareStatement("insert into member values(?, ?, ?, ?, ?)");
+			
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -44,7 +45,7 @@ public class DB {
 		
 	}
 	
-	// 목적: 타 클래스에서 DB 클래스 객체 생성 후 아래 메소드를 호출하여 DB의 중복값이 있는지 확인 받기 위함.
+	// DB의 중복값 유무 확인
 	public String memberSurf(String col, String value) throws SQLException {	// 메소드 호출 시 검색하고 싶은 column 과 중복여부를 확인하고 싶은 값을 매개 변수로 받는다.
 		// [X]이 경우, 중복 값 없을 경우 반환 값이 없어 null 이 되는데, 이 null 은 아예 값이 없는 경우로 값 비교가 불가. 아래와 같이 해야함
 //		srs = stmt.executeQuery("select " + col + " from member where " + col + " = '" + value + "'");	
@@ -57,38 +58,49 @@ public class DB {
 		
 	}
 	
-	// 목적 : 해당 메소드 호출 시 DB에 데이터 값 입력.
-	// first
-	public void insertValue(String col, String value) {
-		try {
-			stmt.executeUpdate("insert into member (" + col + ") values ('" + value + "');");
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-	}
 	
+	// first 
 	public void firstValue(JTextField [] firTxt, JPasswordField [] firPw) {
 		String pw = new String(firPw[0].getPassword());
+		
 		try {
+			sql = "insert into member values(?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
 			for(int i=1; i<6; i++) {
 				if(i<3) {
 					pstmt.setString(i, firTxt[i-1].getText());
 				} else if(i==3) {
 					pstmt.setString(i, pw);
 				} else if(i==4){
-					pstmt.setString(i, "010"+firTxt[i-1].getText()+""+firTxt[i].getText());
+					if(!(firTxt[i-1].getText()).equals("") && !(firTxt[i].getText()).equals("")) {
+						pstmt.setString(i, "010 "+firTxt[i-1].getText()+" "+firTxt[i].getText());
+					} else {
+						pstmt.setString(i, "-");
+					}
+					
 				} else {
 					pstmt.setInt(i, 0);
 				}
 			} 
+			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	// insert
+		public void insertValue(String col, String value) {
+			try {
+				stmt.executeUpdate("insert into member (" + col + ") values ('" + value + "');");
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
 	// edit
 	public void updateValue(String col, String value, String col2, String value2) {
 		try {
@@ -102,7 +114,7 @@ public class DB {
 	// test용 main 메소드
 //	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //		DB db = new DB();
-//		String a = db.memberSurf("name", "관리자");
+//		String a = db.memberSurf("name", "펭귄");
 //		System.out.println(a);
 //	}
 }

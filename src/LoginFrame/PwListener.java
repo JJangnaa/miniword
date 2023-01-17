@@ -1,6 +1,8 @@
 package LoginFrame;
 
 import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.regex.Matcher;
@@ -16,16 +18,16 @@ public class PwListener extends KeyAdapter {
 	private DB repDB = new DB();
 	private JPasswordField [] repPw;
 	private JTextField [] repTxt;
-	private JLabel warnLabel;
+	private JLabel[] noticeLabel;
 	private int yesNo;
 	private String repPwStr;
 	private String repCheStr;
 	
 	
-	public PwListener(JPasswordField [] repPw, JTextField [] repTxt, JLabel warnLabel){
+	public PwListener(JPasswordField [] repPw, JTextField [] repTxt, JLabel[] noticeLabel){
 		this.repPw = repPw;
 		this.repTxt = repTxt;
-		this.warnLabel = warnLabel;
+		this.noticeLabel = noticeLabel;
 	}
 	public void keyPressed(KeyEvent e) {
 		Object obj = e.getSource();
@@ -33,14 +35,14 @@ public class PwListener extends KeyAdapter {
 		repCheStr = new String(repPw[1].getPassword());
 		Pattern pwPat = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
 		Matcher pwMat = pwPat.matcher(repPwStr);
-		
+
 		if(obj == repPw[1]) {
 			if(repPwStr.equals(repCheStr)) {
-				warnLabel.setText("비밀번호 일치");
-				warnLabel.setForeground(Color.GREEN);
+				noticeLabel[3].setText("비밀번호 일치");
+				noticeLabel[3].setForeground(Color.GREEN);
 			} else {
-				warnLabel.setText("비밀번호 불일치");
-				warnLabel.setForeground(Color.RED);
+				noticeLabel[3].setText("비밀번호 불일치");
+				noticeLabel[3].setForeground(Color.RED);
 			}
 		}
 		
@@ -54,18 +56,11 @@ public class PwListener extends KeyAdapter {
 					repPw[0].setText("");
 					repPw[1].setText("");
 				}
-//				if(yesNo == JOptionPane.YES_OPTION) {
-//					repPw[0].setEditable(false);
-//					repPw[1].setEditable(false);
-//					repDB.updateValue("pw", repPwStr, "name", this.repTxt[0].getText());
-//				} else {
-//					repPw[0].setText("");
-//					repPw[1].setText("");
-//				}
 			}
 			
 		}
 		
 	}
+	
 
 }

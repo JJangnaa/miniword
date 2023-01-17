@@ -64,14 +64,6 @@ public class PhoneListener extends KeyAdapter {
 						repTxt[3].setText("");
 						repTxt[4].setText("");
 					}
-//					if(yesNo == JOptionPane.YES_OPTION) {
-//						repTxt[3].setEditable(false);
-//						repTxt[4].setEditable(false);
-//						repDB.updateValue("phonenumber", "010"+phoneTxt1+""+phoneTxt2, "name", this.repTxt[0].getText());
-//					} else {
-//						repTxt[3].setText("");
-//						repTxt[4].setText("");
-//					}
 				}
 				
 			} 
