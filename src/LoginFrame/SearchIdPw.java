@@ -3,6 +3,8 @@ package LoginFrame;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -14,6 +16,9 @@ import javax.swing.JTextField;
 
 public class SearchIdPw extends JDialog {
 	
+	// 리스너 객체 생성
+	private SearchIdPwListener listener;
+	private SearchInfoListener infoListener;
 	// 네이밍 문자 배열
 	private String[] nameStr = {" * 찾는 정보 선택: ", " - name? ", " - ID? ", "-",/**/ " PW ", " ID ",/**/ "search", "close"};
 	// nameStr[0]~[3]
@@ -48,6 +53,9 @@ public class SearchIdPw extends JDialog {
 		c.setLayout(null);
 		c.setBackground(lightGray);
 		
+		listener = new SearchIdPwListener(selIdPwBtn, QnALabel, wantTxt, btn, this);
+		infoListener = new SearchInfoListener(QnALabel, wantTxt);
+		
 		for(int i=0; i<nameStr.length; i++) {
 			// *name 라벨 및 텍스트필드 y값 변경 필요 (리스너를 통해 위치변경 필요 << id visible이 true가 될 경우 위로 조금 움직여줘야 함.)
 			// *id 라벨 및 텍스트필드는 setVisible(false)로 설정 필요 (리스너를 통해 true로 변경 필요)
@@ -71,6 +79,7 @@ public class SearchIdPw extends JDialog {
 				selIdPwBtn[index] = new JRadioButton(nameStr[i]);
 				selIdPwBtn[index].setFont(sanserifNormal);
 				selIdPwBtn[index].setForeground(darkGray);
+				selIdPwBtn[index].addActionListener(infoListener);
 				// name 및 id 입력 텍스트필드  
 				wantTxt[index] = new JTextField(10);
 				wantTxt[index].setFont(sanserifsmall);
@@ -102,12 +111,13 @@ public class SearchIdPw extends JDialog {
 				btn[index].setFont(sanserifsmall);
 				btn[index].setForeground(Color.white);
 				btn[index].setBackground(darkGray);
+				btn[index].addActionListener(listener);
 				if(i==7) {
 					// close btn
 					btn[index].setBounds(180, laY += chY, fixBtnW, fixBtnH);
 				} else {
-					// search btn ( ★★★★★ 추후 리스너로 위치 조정 필요 ★★★★★ 이동 위치: 300, 100, 90, 20)
-					btn[index].setBounds(fixBtnX, 88, 90, 45);	// fixBtnX = 300
+					// search btn 
+					btn[index].setBounds(fixBtnX, 88, 90, 45);
 				}
 				c.add(btn[index]);
 			}
@@ -116,6 +126,37 @@ public class SearchIdPw extends JDialog {
 		setLocation(725, 400);
 		setSize(450, 300);
 		setResizable(false);
-		setVisible(true);
 	}
+}
+
+// 한 클래스 내에 ActionListener 두 개 사용 안되서 하나 만듦.. 
+class SearchInfoListener implements ActionListener{
+	
+	private JLabel [] QnALabel;
+	private JTextField [] wantTxt;
+	
+	public SearchInfoListener(JLabel [] QnALabel, JTextField [] wantTxt) {
+		this.QnALabel = QnALabel;
+		this.wantTxt = wantTxt;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		JRadioButton radioBtn = (JRadioButton) e.getSource();
+		if(radioBtn.isSelected() == true) {
+			if((radioBtn.getText()).equals(" ID ")) {
+				QnALabel[1].setBounds(40, 100, 150, 20);
+				wantTxt[0].setBounds(130, 104, 150, 20);
+				QnALabel[2].setVisible(false);
+				wantTxt[1].setVisible(false);
+				
+			} else {
+				QnALabel[1].setBounds(40, 80, 150, 20);
+				wantTxt[0].setBounds(130, 83, 150, 20);
+				QnALabel[2].setVisible(true);
+				wantTxt[1].setVisible(true);		
+			}
+		} 
+	}
+	
 }

@@ -57,6 +57,22 @@ public class DB {
 		return res;
 		
 	}
+	public String infoSurfID(String col1, String col2, String value) throws SQLException {
+		srs = stmt.executeQuery("select " + col1 + " from member where " + col2 + " = '" + value + "'");
+		while(srs.next()) {
+			res = srs.getString(col1);
+		}
+		return res;
+		
+	}
+	public String infoSurfPW(String col1, String col2, String col3, String value1, String value2) throws SQLException {
+		srs = stmt.executeQuery("select " + col1 + " from member where " + col2 + " = '" + value1 + "' and " + col3 + " = '" + value2 + "'");
+		while(srs.next()) {
+			res = srs.getString(col1);
+		}
+		return res;
+		
+	}
 	
 	
 	// first 
@@ -114,7 +130,7 @@ public class DB {
 	// test용 main 메소드
 //	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //		DB db = new DB();
-//		String a = db.memberSurf("pw", "20221130Wed");
+//		String a = db.infoSurf("id", "name", "핑구");
 //		System.out.println(a);
 //	}
 }
