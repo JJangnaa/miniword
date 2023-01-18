@@ -15,8 +15,9 @@ import javax.swing.JTextField;
 
 public class LogInFrame extends JFrame {
 	
-	// 회원가입 다이얼로그 객체 생성
+	// 회원가입 및 id/pw 찾기 다이얼로그 객체 생성
 	private JoinDialog join;
+	private SearchIdPw seaIdPw;
 	
 	// 네이밍 배열
 	private String [] nameStr = {"ID", "PW", "LogIn", "search for id/pw", "Join"};
@@ -34,9 +35,9 @@ public class LogInFrame extends JFrame {
 	private Color darkGray = new Color(127, 127, 127);
 	private Color lightGray = new Color(242, 242, 242);
 	
-	// 상단 중앙부분 이미지
-	private ImageIcon bulbImage = new ImageIcon("images/bulb.png");
-	private JLabel bulbImgLabel = new JLabel(bulbImage);
+	// 상단 중앙부분 이미지 (아직)
+//	private ImageIcon bulbImage = new ImageIcon("images/bulb.png");
+//	private JLabel bulbImgLabel = new JLabel(bulbImage);
 	
 	// 로그인 리스너
 	private LogInListener listener = new LogInListener(idTxt, pwTxt);
@@ -48,8 +49,9 @@ public class LogInFrame extends JFrame {
 		c.setLayout(null);
 		c.setBackground(lightGray);
 		
-		// 회원가입 다이얼로그 매개변수 입력.
+		// 회원가입 및 id/pw 찾기 다이얼로그 매개변수 입력.
 		join = new JoinDialog(this, "Join");
+		seaIdPw = new SearchIdPw(this, "search for id/password");
 		
 		// 네이밍 및 폰트 설정
 		for(int i=0; i<nameStr.length; i++) {
@@ -60,13 +62,15 @@ public class LogInFrame extends JFrame {
 				logLabel[i].setFont(sanserifNormal);
 				logLabel[i].setForeground(darkGray);
 				if(i==0) {
-					idTxt.setBounds(115, 155, 210, 40);
 					logLabel[i].setBounds(40, 155, 40, 40);
+					idTxt.setBounds(115, 155, 210, 40);
+					idTxt.addKeyListener(listener);
 					c.add(logLabel[i]);
 					c.add(idTxt);
 				} else if(i==1) {
-					pwTxt.setBounds(115, 225, 210, 40);
 					logLabel[i].setBounds(25, 220, 90, 40);
+					pwTxt.setBounds(115, 225, 210, 40);
+					pwTxt.addKeyListener(listener);
 					c.add(logLabel[i]);
 					c.add(pwTxt);
 				}
@@ -78,11 +82,26 @@ public class LogInFrame extends JFrame {
 				logBtn[index].setForeground(Color.white);
 				if(i==2) {
 					logBtn[index].setBounds(350, 170, 110, 80);	 // 로그인 버튼
+					logBtn[index].addActionListener(listener);
 				} else if(i==3) {
 					logBtn[index].setBounds(30, 300, 230, 30);	// ID 및 PW 찾기 버튼
+					logBtn[index].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							seaIdPw.setVisible(true);
+						}
+						
+					});
 				} else if(i==4) {
 					logBtn[index].setBounds(300, 300, 150, 30);	// 회원가입 버튼
-					logBtn[index].addActionListener(listener);
+					logBtn[index].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							join.setVisible(true);
+						}
+					});
 				}
 				c.add(logBtn[index]);
 				index++;

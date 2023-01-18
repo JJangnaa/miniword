@@ -114,7 +114,7 @@ public class DB {
 	// test용 main 메소드
 //	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //		DB db = new DB();
-//		String a = db.memberSurf("name", "펭귄");
+//		String a = db.memberSurf("pw", "20221130Wed");
 //		System.out.println(a);
 //	}
 }
