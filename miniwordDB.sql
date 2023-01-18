@@ -1,0 +1,18 @@
+CREATE DATABASE `miniworddb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE TABLE `member` (
+  `NAME` varchar(45) DEFAULT NULL,
+  `ID` varchar(45) DEFAULT NULL,
+  `PW` varchar(45) DEFAULT NULL,
+  `PHONENUMBER` varchar(45) DEFAULT NULL,
+  `GRADE` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `request` (
+  `ID` varchar(45) NOT NULL,
+  `NAME` varchar(45) NOT NULL,
+  `ADD/DELETE` varchar(45) NOT NULL,
+  `CONTENT` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `word` (
+  `ENG` varchar(45) NOT NULL,
+  `KOR` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
