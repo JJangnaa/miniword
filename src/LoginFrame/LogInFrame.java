@@ -40,7 +40,7 @@ public class LogInFrame extends JFrame {
 //	private JLabel bulbImgLabel = new JLabel(bulbImage);
 	
 	// 로그인 리스너
-	private LogInListener listener = new LogInListener(idTxt, pwTxt);
+	private LogInListener listener;
 	
 	public LogInFrame() {
 		setTitle("MiniWord_LogIn");
@@ -49,6 +49,8 @@ public class LogInFrame extends JFrame {
 		c.setLayout(null);
 		c.setBackground(lightGray);
 		
+		listener = new LogInListener(idTxt, pwTxt, this);
+				
 		// 회원가입 및 id/pw 찾기 다이얼로그 매개변수 입력.
 		join = new JoinDialog(this, "Join");
 		seaIdPw = new SearchIdPw(this, "search for id/password");

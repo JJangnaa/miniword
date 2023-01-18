@@ -10,17 +10,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import ManagerFrame.ManagerFrame;
+
 public class LogInListener extends KeyAdapter implements ActionListener {
 	
 	private DB repDB = new DB();
+	private ManagerFrame managerFrame;
+	private LogInFrame logInFrame;
 	private String resId;
 	private String resPw;
 	private JTextField idTxt;
 	private JPasswordField pwTxt;
 	
-	public LogInListener(JTextField idTxt, JPasswordField pwTxt) {
+	public LogInListener(JTextField idTxt, JPasswordField pwTxt, LogInFrame logInFrame) {
 		this.idTxt = idTxt;
 		this.pwTxt = pwTxt;
+		this.logInFrame = logInFrame;
+		this.managerFrame = new ManagerFrame();
 	}
 	public void keyPressed(KeyEvent e) {
 		Object obj = e.getSource();
@@ -41,7 +47,11 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 						JOptionPane.showMessageDialog(null, "환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
 						idTxt.setText("");
 						pwTxt.setText("");
-						// ++ 로그인 후 화면 연결해야함!
+						// 로그인 후 화면 연결
+						// + 로그인 정보에 따라 띄우는 창이 달라야 함. (관리자모드, 회원모드)
+						// ++ 회원모드로 로그인할 경우, 로그인 정보가 회원모드 내의 회원정보와 동일 해야함.
+						logInFrame.setVisible(false);
+						managerFrame.setVisible(true);
 					}
 				}
 			} catch (SQLException e1) {
@@ -70,7 +80,11 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 					JOptionPane.showMessageDialog(null, "환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
 					idTxt.setText("");
 					pwTxt.setText("");
-					// ++ 로그인 후 화면 연결해야함!
+					// 로그인 후 화면 연결
+					// + 로그인 정보에 따라 띄우는 창이 달라야 함. (관리자모드, 회원모드)
+					// ++ 회원모드로 로그인할 경우, 로그인 정보가 회원모드 내의 회원정보와 동일 해야함.
+					logInFrame.setVisible(false);
+					managerFrame.setVisible(true);
 				}
 			}
 		} catch (SQLException e1) {
