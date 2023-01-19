@@ -3,6 +3,7 @@ package ManagerFrame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,7 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import LoginFrame.DB;
+
+// 단어관리 패널
 public class WordAdminPanel extends JPanel {
+	// 단어목록 불러오기 위함.
+	private DBListPanel wordList = new DBListPanel("word");
 	// 지정 폰트 및 컬러
 	private Color skyBlue = new Color(220, 240, 244);
 	private Color darkGray = new Color(127, 127, 127);
@@ -37,6 +43,10 @@ public class WordAdminPanel extends JPanel {
 		setBackground(skyBlue);
 		setLayout(null);
 		
+		// 단어목록
+		wordList.setBounds(230, 60, 240, 270);
+		this.add(wordList);
+
 		for(int i=0; i<nameStr.length; i++) {
 			if(i<4) {
 				label[i] = new JLabel(nameStr[i]);

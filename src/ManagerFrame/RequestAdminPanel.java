@@ -9,8 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+// 요청사항 패널
 public class RequestAdminPanel extends JPanel {
-	
+	// 요청사항 불러오기 위함.
+	private DBListPanel wordList = new DBListPanel("request");
 	// 지정 폰트 및 컬러
 	private Color blueGreen = new Color(50, 142, 160);
 	private Color darkGray = new Color(127, 127, 127);
@@ -24,7 +26,7 @@ public class RequestAdminPanel extends JPanel {
 	private int pX = 70;
 	// 안내 라벨
 	private JLabel noticeLa = new JLabel("⚠ 요청 사항 확인 후 진행 ⚠");
-	
+	// 상세 요청사항 확인가능한 프레임
 	private RequestCheckFrame check = new RequestCheckFrame();
 	
 	// 생성자
@@ -32,13 +34,16 @@ public class RequestAdminPanel extends JPanel {
 		setBackground(blueGreen);
 		setLayout(null);
 		
+		wordList.setBounds(25, 110, 420, 200);
+		this.add(wordList);
+		
 		for(int i=0; i<nameStr.length; i++) {
 			btn[i] = new JButton(nameStr[i]);
 			btn[i].setForeground(Color.WHITE);
 			btn[i].setFont(sanserifSmall);
 			btn[i].setBackground(darkGray);
 			btn[i].setBounds(btnX += pX, btnY, btnW, btnH);
-			if(i==1) {	// 임시 리스너(추후 수정 필요!!)
+			if(i==1) {
 				btn[i].addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

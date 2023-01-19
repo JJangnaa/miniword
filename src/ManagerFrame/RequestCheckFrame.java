@@ -12,19 +12,18 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+// 요청사항 패널에서 확인 버튼 누르면 나오는 프레임
 public class RequestCheckFrame extends JFrame {
-	
 	// 지정 폰트 및 컬러
 	private Color lightGray = new Color(242, 242, 242);
 	private Color darkGray = new Color(127, 127, 127);
 	private Font sanserifSmall = new Font("SanSerif", Font.BOLD, 15);
 	private Font sanserifBig = new Font("SanSerif", Font.BOLD, 20);
-	
 	// 내용물
 	private JButton okBtn = new JButton("확인");
 	private JTextField goalTxt = new JTextField(" 단어 ");
 	private JTextArea request = new JTextArea(" 요청사항" + "\n");
-	
+	// 생성자
 	public RequestCheckFrame() {
 		setLayout(new FlowLayout());
 		Container c = getContentPane();
@@ -53,7 +52,6 @@ public class RequestCheckFrame extends JFrame {
 				// TODO Auto-generated method stub
 				setVisible(false);
 			}
-			
 		});
 		c.add(okBtn);
 		

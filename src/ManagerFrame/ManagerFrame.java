@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+// 관리자 창 메인프레임
 public class ManagerFrame extends JFrame{
 	// 단어관리 및 요청사항 패널 객체 생성
 	private WordAdminPanel adminPanel = new WordAdminPanel();
