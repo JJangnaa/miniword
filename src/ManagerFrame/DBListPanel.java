@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import LoginFrame.DB;
@@ -52,7 +53,12 @@ public class DBListPanel extends JPanel {
 			wordDB.selectAllrequest(model, col);
 			this.add(js);
 		}
-		
+		// 하나의 행만 선택할 수 있게 하기 위함.
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	}
+
+	public JTable getTable() {
+		return table;
 	}
 	
 	
