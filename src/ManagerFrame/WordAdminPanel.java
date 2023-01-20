@@ -3,6 +3,8 @@ package ManagerFrame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -10,13 +12,16 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import LoginFrame.DB;
 
 // 단어관리 패널
 public class WordAdminPanel extends JPanel {
 	// 단어목록 불러오기 위함.
-	private DBListPanel wordList = new DBListPanel("word");
+	private DBListPanel wordList;
+	private String alphabet;
 	// 단어목록 붙일 리스너
 	private WordListListener listener;
 	// 지정 폰트 및 컬러
@@ -44,12 +49,7 @@ public class WordAdminPanel extends JPanel {
 		int index = 0;
 		setBackground(skyBlue);
 		setLayout(null);
-		
-		// 단어목록
-		wordList.setBounds(230, 60, 240, 270);
-		listener = new WordListListener(inputTxt, btn, wordList);
-		wordList.getTable().addMouseListener(listener);
-		this.add(wordList);
+		alphabet = "All";
 		
 		for(int i=0; i<nameStr.length; i++) {
 			if(i<3) {
@@ -61,7 +61,22 @@ public class WordAdminPanel extends JPanel {
 					label[i].setFont(sanserifBig);
 					label[i].setBounds(startX, startY, startW, startH);
 					inputTxt[i].setBounds(txtStartX, txtStartY += inTxtPY, txtStartW, txtStartH);
+					// 콤보박스(시작 알파벳 설정)
 					selEngKorCombo.setBounds(420, 20, 50, 25);
+					selEngKorCombo.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							JComboBox cb = (JComboBox) e.getSource();
+							int cbIndex = cb.getSelectedIndex();
+							alphabet = selEngKorStr[cbIndex];
+							wordList = new DBListPanel("word", alphabet);
+							wordList.setBounds(230, 60, 240, 270);
+							wordList.getTable().addMouseListener(listener);
+							add(wordList);
+						}
+						
+					});
 				} else {
 					// eng, kor 라벨
 					label[i].setFont(sanserifMid);
@@ -98,7 +113,13 @@ public class WordAdminPanel extends JPanel {
 				index++;
 			}
 		}
+		// 단어목록
+//		wordList = new DBListPanel("word", alphabet);
+//		wordList.setBounds(230, 60, 240, 270);
+		listener = new WordListListener(inputTxt, btn, wordList);
+//		wordList.getTable().addMouseListener(listener);
 		
+//		this.add(wordList);
 	}
 	
 	// 분리선

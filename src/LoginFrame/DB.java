@@ -11,6 +11,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import ManagerFrame.WordListListener;
+
 public class DB {
 	
 	private Connection conn;
@@ -20,7 +22,6 @@ public class DB {
 	private String sql;
 	private String res = null;
 	private int result;
-
 // --------------------------------------------------------------
 	// DB 연결 메소드
 	private void connect() {
@@ -125,16 +126,47 @@ public class DB {
 // --------------------------------------------------------------
 /*wordDB section*/
 	// 전체 단어 select
-	public void selectAllword(DefaultTableModel model, String col) {
+//	public void selectAllword(DefaultTableModel model, String col) {
+//		connect();
+//		try {
+//			ResultSet srs = stmt.executeQuery("select * from " + col);
+//			while(srs.next()) {
+//				String eng = srs.getString("eng");
+//				String kor = srs.getString("kor");
+//				Object data [] = {eng, kor};
+//				model.addRow(data);
+//			} 
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	
+	
+	public void selectAlphabet(DefaultTableModel model, String col, String alphabet) {
 		connect();
 		try {
-			ResultSet srs = stmt.executeQuery("select * from " + col);
-			while(srs.next()) {
-				String eng = srs.getString("eng");
-				String kor = srs.getString("kor");
-				Object data [] = {eng, kor};
-				model.addRow(data);
+			if(alphabet.equals("All")) {
+				ResultSet srs = stmt.executeQuery("select * from " + col);
+				while(srs.next()) {
+					String eng = srs.getString("eng");
+					String kor = srs.getString("kor");
+					Object data [] = {eng, kor};
+					model.addRow(data);
+				} 
+			} else {
+				
+				ResultSet srs = stmt.executeQuery("select * from " + col + " where eng like '" + alphabet + "%'");
+				while(srs.next()) {
+					String eng = srs.getString("eng");
+					String kor = srs.getString("kor");
+					Object data [] = {eng, kor};
+					model.addRow(data);
+				}
+				System.out.println("select * from " + col + " where eng like '" + alphabet + "%'");
 			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
