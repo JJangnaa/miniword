@@ -145,6 +145,16 @@ public class DB {
 		return res;
 		
 	}
+	// (추출용 2) 영단어 랜덤 추출
+	public String randomWord() throws SQLException {	
+		connect();
+		srs = stmt.executeQuery("select eng from word order by rand() limit 1");
+		while(srs.next()) {
+			res = srs.getString("eng");
+		}
+		return res;
+		
+	}
 	// 전체 단어 select
 	public void selectAllword(DefaultTableModel model, JTable table) {
 		connect();
@@ -279,13 +289,10 @@ public class DB {
 		}
 	}
 	// test용 main 메소드
-//	public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//		DB db = new DB();
-//		String a = db.existKorSurf("kor", "abc");
-//		System.out.println(a);
-//		String kor = a +", " + "최공!";
-//		db.updateValue(kor, "abc");
-//		System.out.println(kor);
-//		
-//	}
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+		DB db = new DB();
+		String a = db.randomWord();
+		System.out.println(a);
+		
+	}
 }

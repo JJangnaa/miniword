@@ -109,7 +109,6 @@ public class LogInFrame extends JFrame {
 				index++;
 			}
 		}
-		
 		setLocation(700, 300);
 		setSize(500, 500);
 		setVisible(true);
