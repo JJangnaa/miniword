@@ -40,7 +40,13 @@ public class PwListener extends KeyAdapter {
 			repCheStr = new String(repPw[1].getPassword());
 			// String s = Character.toString(e.getKeyChar());
 			repCheStr += e.getKeyChar();
+		}else if(e.getSource() == repPw[1]) {
+			repPwStr = new String(repPw[0].getPassword());
+			repCheStr = new String(repPw[1].getPassword());
+			// String s = Character.toString(e.getKeyChar());
+			repCheStr += e.getKeyChar();
 		}
+		
 		Pattern pwPat = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
 		Matcher pwMat = pwPat.matcher(repPwStr);
 
