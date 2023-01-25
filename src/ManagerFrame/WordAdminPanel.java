@@ -21,9 +21,10 @@ import LoginFrame.DB;
 public class WordAdminPanel extends JPanel {
 	// 단어목록 불러오기 위함.
 	private DBListPanel wordList;
-	private String alphabet;
 	// 단어목록 붙일 리스너
-	private WordListListener listener;
+	private WordTableClickListener listener;
+	private WordSearchListener searchWordListener;
+	private WordModifyListener modifyListener;
 	// 지정 폰트 및 컬러
 	private Color skyBlue = new Color(220, 240, 244);
 	private Color darkGray = new Color(127, 127, 127);
@@ -41,15 +42,14 @@ public class WordAdminPanel extends JPanel {
 	private JLabel [] label = new JLabel[3];
 	private JButton [] btn = new JButton[4];
 	private JTextField [] inputTxt = new JTextField[3];
-		// 콤보박스
-	private String[] selEngKorStr = {"All", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-	private JComboBox<String> selEngKorCombo = new JComboBox<String>(selEngKorStr);
 	// 생성자
 	public WordAdminPanel() {
 		int index = 0;
 		setBackground(skyBlue);
 		setLayout(null);
-		alphabet = "All";
+		
+		searchWordListener = new WordSearchListener(inputTxt, this);
+		modifyListener = new WordModifyListener(inputTxt, this);
 		
 		for(int i=0; i<nameStr.length; i++) {
 			if(i<3) {
@@ -61,22 +61,6 @@ public class WordAdminPanel extends JPanel {
 					label[i].setFont(sanserifBig);
 					label[i].setBounds(startX, startY, startW, startH);
 					inputTxt[i].setBounds(txtStartX, txtStartY += inTxtPY, txtStartW, txtStartH);
-					// 콤보박스(시작 알파벳 설정)
-					selEngKorCombo.setBounds(420, 20, 50, 25);
-					selEngKorCombo.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
-							JComboBox cb = (JComboBox) e.getSource();
-							int cbIndex = cb.getSelectedIndex();
-							alphabet = selEngKorStr[cbIndex];
-							wordList = new DBListPanel("word", alphabet);
-							wordList.setBounds(230, 60, 240, 270);
-							wordList.getTable().addMouseListener(listener);
-							add(wordList);
-						}
-						
-					});
 				} else {
 					// eng, kor 라벨
 					label[i].setFont(sanserifMid);
@@ -87,9 +71,9 @@ public class WordAdminPanel extends JPanel {
 					} else {
 						// 검색을 위한 텍스트필드
 						inputTxt[i].setBounds(240, txtStartY += 150, txtStartW -= 25, txtStartH);
+						inputTxt[i].addKeyListener(searchWordListener);
 					}
 				}
-				this.add(selEngKorCombo);
 				this.add(inputTxt[i]);
 				this.add(label[i]);
 			} else {
@@ -98,6 +82,7 @@ public class WordAdminPanel extends JPanel {
 				btn[index].setBackground(darkGray);
 				btn[index].setFont(sanserifMid);
 				if(i<(nameStr.length-1)) {
+					btn[index].addActionListener(modifyListener);
 					if(i==3) {
 						// 추가 버튼
 						btn[index].setBounds(btnStartX, btnStartY, btnStartW, btnStartH);
@@ -108,27 +93,32 @@ public class WordAdminPanel extends JPanel {
 				} else {
 					// 검색 버튼
 					btn[index].setBounds(400, txtStartY, 70, txtStartH);
+					btn[index].addActionListener(searchWordListener);
 				}
 				this.add(btn[index]);
 				index++;
 			}
 		}
 		// 단어목록
-//		wordList = new DBListPanel("word", alphabet);
-//		wordList.setBounds(230, 60, 240, 270);
-		listener = new WordListListener(inputTxt, btn, wordList);
-//		wordList.getTable().addMouseListener(listener);
-		
-//		this.add(wordList);
+		wordList = new DBListPanel();
+		wordList.setBounds(230, 20, 240, 310);
+//		wordList.setBounds(230, 60, 240, 270);		selEngKorCombo.setBounds(420, 20, 50, 25);
+		listener = new WordTableClickListener(inputTxt, wordList);
+		wordList.getTable().addMouseListener(listener);
+		this.add(wordList);
 	}
 	
+
 	// 분리선
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.setColor(lightGray);
-			g.drawLine(220, 0, 220, getHeight());
-			
-		}
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(lightGray);
+		g.drawLine(220, 0, 220, getHeight());
 		
+	}
+	
+	public DBListPanel getWordList() {
+		return wordList;
+	}
 
 }

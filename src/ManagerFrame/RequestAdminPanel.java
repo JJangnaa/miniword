@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 // 요청사항 패널
 public class RequestAdminPanel extends JPanel {
 	// 요청사항 불러오기 위함.
-	private DBListPanel wordList = new DBListPanel("request");
+//	private DBListPanel wordList = new DBListPanel("request");
 	// 지정 폰트 및 컬러
 	private Color blueGreen = new Color(50, 142, 160);
 	private Color darkGray = new Color(127, 127, 127);
@@ -34,8 +34,8 @@ public class RequestAdminPanel extends JPanel {
 		setBackground(blueGreen);
 		setLayout(null);
 		
-		wordList.setBounds(25, 110, 420, 200);
-		this.add(wordList);
+//		wordList.setBounds(25, 110, 420, 200);
+//		this.add(wordList);
 		
 		for(int i=0; i<nameStr.length; i++) {
 			btn[i] = new JButton(nameStr[i]);

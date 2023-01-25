@@ -8,10 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import ManagerFrame.WordListListener;
+import ManagerFrame.WordTableClickListener;
 
 public class DB {
 	
@@ -22,6 +23,7 @@ public class DB {
 	private String sql;
 	private String res = null;
 	private int result;
+	private String nullSurf;
 // --------------------------------------------------------------
 	// DB 연결 메소드
 	private void connect() {
@@ -100,18 +102,6 @@ public class DB {
 		}
 	}
 	
-	// insert
-	public void insertValue(String col, String value) {
-		connect();
-			try {
-				stmt.executeUpdate("insert into member (" + col + ") values ('" + value + "');");
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-		}
 		
 	// edit
 	public void updateValue(String col, String value, String col2, String value2) {
@@ -125,30 +115,65 @@ public class DB {
 	}
 // --------------------------------------------------------------
 /*wordDB section*/
-	// 전체 단어 select
-//	public void selectAllword(DefaultTableModel model, String col) {
-//		connect();
-//		try {
-//			ResultSet srs = stmt.executeQuery("select * from " + col);
-//			while(srs.next()) {
-//				String eng = srs.getString("eng");
-//				String kor = srs.getString("kor");
-//				Object data [] = {eng, kor};
-//				model.addRow(data);
-//			} 
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-	
-	
-	
-	public void selectAlphabet(DefaultTableModel model, String col, String alphabet) {
+	// (판별용 1) 원하는 조건의 결과가 없을 때 Null 출력
+	public String wordSurf(String col, String value) throws SQLException {	
 		connect();
+		srs = stmt.executeQuery("select max(" + col + ") " + col + " from word where " + col + " = '" + value + "'");
+		while(srs.next()) {
+			res = srs.getString(col);
+		}
+		return res;
+		
+	}
+	// (판별용 2) 원하는 조건의 결과가 없을 때 Null 출력
+	public String wordNullSurf(String col, String value) throws SQLException {	
+		connect();
+		srs = stmt.executeQuery("select max(" + col + ") " + col + " from word where " + col + " like '" + value + "%'");
+		while(srs.next()) {
+			res = srs.getString(col);
+		}
+		return res;
+		
+	}
+	// (추출용) 기존 뜻 추출
+	public String existKorSurf(String col, String value) throws SQLException {	
+		connect();
+		srs = stmt.executeQuery("select " + col + " from word where eng = '" + value + "'");
+		while(srs.next()) {
+			res = srs.getString(col);
+		}
+		return res;
+		
+	}
+	// 전체 단어 select
+	public void selectAllword(DefaultTableModel model, JTable table) {
+		connect();
+		resetWordList(model, table);
+		try {
+			srs = stmt.executeQuery("select * from word order by eng asc");
+			while(srs.next()) {
+				String eng = srs.getString("eng");
+				String kor = srs.getString("kor");
+				Object data [] = {eng, kor};
+				model.addRow(data);
+			} 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	// 기존 테이블 리셋
+	public void resetWordList(DefaultTableModel model, JTable table) {
+		DefaultTableModel resetModel = (DefaultTableModel) table.getModel();
+		resetModel.setNumRows(0);
+	}
+	// 특정 알파벳으로 시작하는 단어들만 리스트업
+	public void selectAlphabet(DefaultTableModel model, String tables, String alphabet, JTable table) {
+		connect();
+		resetWordList(model, table);
 		try {
 			if(alphabet.equals("All")) {
-				ResultSet srs = stmt.executeQuery("select * from " + col);
+				srs = stmt.executeQuery("select * from word order by eng asc");
 				while(srs.next()) {
 					String eng = srs.getString("eng");
 					String kor = srs.getString("kor");
@@ -156,15 +181,19 @@ public class DB {
 					model.addRow(data);
 				} 
 			} else {
-				
-				ResultSet srs = stmt.executeQuery("select * from " + col + " where eng like '" + alphabet + "%'");
-				while(srs.next()) {
-					String eng = srs.getString("eng");
-					String kor = srs.getString("kor");
-					Object data [] = {eng, kor};
+				nullSurf = wordNullSurf("eng", alphabet);
+				if(nullSurf == null) {
+					Object data [] = null;
 					model.addRow(data);
+				} else {
+					srs = stmt.executeQuery("select * from " + tables + " where eng like '" + alphabet + "%' order by eng asc");
+					while(srs.next()) {
+						String eng = srs.getString("eng");
+						String kor = srs.getString("kor");
+						Object data [] = {eng, kor};
+						model.addRow(data);
+					}
 				}
-				System.out.println("select * from " + col + " where eng like '" + alphabet + "%'");
 			}
 			
 		} catch (SQLException e) {
@@ -172,12 +201,70 @@ public class DB {
 			e.printStackTrace();
 		}
 	}
+	// 텍스트창 입력 알파벳 들어가는 단어들로 리스트업
+	public void searchAlphabet(DefaultTableModel model, String alphabet, JTable table) throws SQLException {
+		connect();
+		// !!! 해당 메소드에서 받은 table로 아래 메소드에 넣어줘야함 !!!
+		resetWordList(model, table);
+		try {
+			
+			if(alphabet.equals("")) {
+				srs = stmt.executeQuery("select * from word order by eng asc");
+			} else {
+				srs = stmt.executeQuery("select * from word where eng like '%" + alphabet + "%' order by eng asc");
+			}
+			while(srs.next()) {
+				String eng = srs.getString("eng");
+				String kor = srs.getString("kor");
+				Object data [] = {eng, kor};
+				model.addRow(data);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	// insert
+	public void insertValue(String eng, String kor) {
+		connect();
+			try {
+				stmt.executeUpdate("insert into word (eng, kor) values ('" + eng + "', '" + kor + "');");
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+	}
+	// delete
+	public void deleteValue(String eng) {
+		connect();
+			try {
+				stmt.executeUpdate("delete from word where eng = '" + eng + "'");
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+	}
+	// update
+	public void updateValue(String kor, String eng) {
+		connect();
+			try {
+				stmt.executeUpdate("update word set kor = '" + kor + "' where eng = '" + eng + "'");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+	}
 // --------------------------------------------------------------
 /*requestDB section*/
 	public void selectAllrequest(DefaultTableModel model, String col) {
 		connect();
 		try {
-			ResultSet srs = stmt.executeQuery("select * from " + col);
+			srs = stmt.executeQuery("select * from " + col);
 			while(srs.next()) {
 				String id = srs.getString("id");
 				String name = srs.getString("name");
@@ -194,6 +281,11 @@ public class DB {
 	// test용 main 메소드
 //	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //		DB db = new DB();
+//		String a = db.existKorSurf("kor", "abc");
+//		System.out.println(a);
+//		String kor = a +", " + "최공!";
+//		db.updateValue(kor, "abc");
+//		System.out.println(kor);
 //		
 //	}
 }
