@@ -3,6 +3,8 @@ package MemberFrame;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -39,6 +41,10 @@ public class MemberPanel extends JPanel {
 	
 	private SearchListener listener;
 	
+	private FontColorFrame fc = new FontColorFrame();
+	private RequestDialog request;
+	private MemberRequestListener requestListener;
+	
 	public MemberPanel() {
 		setBackground(skyBlue);
 		setLayout(null);
@@ -62,6 +68,9 @@ public class MemberPanel extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		requestLabel = new JLabel("* 단어 추가/수정 요청하기");
+		request = new RequestDialog(fc, requestLabel);
+		requestListener = new MemberRequestListener(request);
+		requestLabel.addMouseListener(requestListener);
 		requestLabel.setForeground(lightGray);
 		requestLabel.setBounds(20, 350, 200, 25);
 		
