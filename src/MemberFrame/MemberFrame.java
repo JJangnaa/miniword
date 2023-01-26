@@ -79,7 +79,7 @@ public class MemberFrame extends JFrame{
 		setLocation(700, 300);
 		setSize(500, 500);
 		setResizable(false);
-		setVisible(true);
+//		setVisible(true);
 		
 	}
 	
@@ -96,9 +96,9 @@ public class MemberFrame extends JFrame{
 		return nameLabel;
 	}
 	// test용 메인메소드
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new MemberFrame();
-	}
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//		new MemberFrame();
+//	}
 
 }

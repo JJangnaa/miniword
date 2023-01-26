@@ -3,6 +3,7 @@ package MemberFrame;
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,15 +28,18 @@ public class GamePanel extends JPanel {
 	
 	private JLabel chance;
 	private JLabel question;
+	
 	private String questionStr;
+	private RandomQuestion randomStr;
+	
 	private DB db = new DB();
-	private GameListener listener;
+	private RetryButtonListener listener;
 	
 	private JTextField quiz;
 	private JTextField answer;
 	private JTextField inputAnswer;
-	private JButton submit;
-	private JButton retry;
+	private JButton checkAnswerBtn;
+	private JButton retryBtn;
 	
 	public GamePanel() {
 		setBackground(blueGreen);
@@ -55,14 +59,18 @@ public class GamePanel extends JPanel {
 		quiz.setBorder(border);
 		quiz.setBounds(40, 80, 80, 20);
 		
+		// [문제뽑아내기]
 		question = new JLabel();
-		try {
+		try {	// 1) 단어 랜덤 추출
 			questionStr = db.randomWord();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		question.setText(questionStr);
+		// 2) 추출된 단어 철자 랜덤으로 바꾸기
+		randomStr = new RandomQuestion(questionStr);
+		question.setText(randomStr.getRandomStr());
+		// 3) 세부설정
 		question.setForeground(Color.WHITE);
 		question.setFont(new Font("SanSerif", Font.BOLD, 35));
 		question.setBounds(40, 100, 410, 150);
@@ -83,32 +91,32 @@ public class GamePanel extends JPanel {
 		inputAnswer.setFont(new Font("SanSerif", Font.PLAIN, 14));
 		inputAnswer.setBounds(170, 295, 150, 20);
 		
-		submit = new JButton("확인");
-		submit.setBackground(lightBlue);
-		submit.setForeground(likeBlack);
-		submit.setFont(new Font("SanSerif", Font.BOLD, 16));
-		submit.setBorder(submitBorder);
-		submit.setBounds(335, 295, 70, 20);
+		checkAnswerBtn = new JButton("확인");
+		checkAnswerBtn.setBackground(lightBlue);
+		checkAnswerBtn.setForeground(likeBlack);
+		checkAnswerBtn.setFont(new Font("SanSerif", Font.BOLD, 16));
+		checkAnswerBtn.setBorder(submitBorder);
+		checkAnswerBtn.setBounds(335, 295, 70, 20);
 		
-		retry = new JButton("Retry");
-		retry.setBackground(deepBlue);
-		retry.setForeground(Color.WHITE);
-		retry.setFont(new Font("SanSerif", Font.BOLD, 18));
-		retry.setBorder(retryBorder);
-		retry.setBounds(190, 350, 120, 28);
+		retryBtn = new JButton("Retry");
+		retryBtn.setBackground(deepBlue);
+		retryBtn.setForeground(Color.WHITE);
+		retryBtn.setFont(new Font("SanSerif", Font.BOLD, 18));
+		retryBtn.setBorder(retryBorder);
+		retryBtn.setBounds(190, 350, 120, 28);
 		
-		listener = new GameListener(question, chance);
-		submit.addActionListener(listener);
-		retry.addActionListener(listener);
-		
+		// 리스너 달기
+		listener = new RetryButtonListener(question, chance, inputAnswer, questionStr, checkAnswerBtn);
+		retryBtn.addActionListener(listener);
+		checkAnswerBtn.addActionListener(listener);
 		
 		this.add(chance);
 		this.add(question);
 		this.add(quiz);
 		this.add(answer);
 		this.add(inputAnswer);
-		this.add(submit);
-		this.add(retry);
+		this.add(checkAnswerBtn);
+		this.add(retryBtn);
 		
 	}
 }
