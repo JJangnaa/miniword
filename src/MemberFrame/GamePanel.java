@@ -34,6 +34,7 @@ public class GamePanel extends JPanel {
 	
 	private DB db = new DB();
 	private RetryButtonListener listener;
+	private MemberRequestListener requestListener;
 	
 	private JTextField quiz;
 	private JTextField answer;
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel {
 	private JLabel nameLabel;
 	private JLabel gradeLabel;
 	private JTextField gradeTxt;
+	
 	
 	public GamePanel() {
 		setBackground(blueGreen);
@@ -83,7 +85,7 @@ public class GamePanel extends JPanel {
 		question = new JLabel();
 		try {	// 1) 단어 랜덤 추출
 			questionStr = db.randomWord();
-			System.out.println(questionStr);
+//			System.out.println(questionStr);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,6 +132,7 @@ public class GamePanel extends JPanel {
 		listener = new RetryButtonListener(this);
 		retryBtn.addActionListener(listener);
 		checkAnswerBtn.addActionListener(listener);
+		
 		
 		
 		this.add(chance);

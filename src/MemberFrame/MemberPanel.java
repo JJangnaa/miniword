@@ -45,9 +45,15 @@ public class MemberPanel extends JPanel {
 	private RequestDialog request;
 	private MemberRequestListener requestListener;
 	
-	public MemberPanel() {
+	private GamePanel gamePanel;
+	private JLabel nameLabel;
+	
+	public MemberPanel(MemberFrame memberFrame, GamePanel gamePanel) {
 		setBackground(skyBlue);
 		setLayout(null);
+		
+		this.gamePanel = gamePanel;
+		nameLabel = gamePanel.getNameLabel();
 		
 		model = new DefaultTableModel(ob, wordStr);
 		table = new JTable(model);
@@ -68,21 +74,24 @@ public class MemberPanel extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		requestLabel = new JLabel("* 단어 추가/수정 요청하기");
-		request = new RequestDialog(fc, requestLabel);
-		requestListener = new MemberRequestListener(request);
-		requestLabel.addMouseListener(requestListener);
 		requestLabel.setForeground(lightGray);
 		requestLabel.setBounds(20, 350, 200, 25);
 		
 		searchWordTxt = new JTextField();
 		searchWordTxt.setBounds(240, 370, 150, 25);
-		listener = new SearchListener(searchWordTxt, this);
-		searchWordTxt.addKeyListener(listener);
 		
 		searchBtn = new JButton("Search");
 		searchBtn.setBounds(390, 370, 80, 25);
 		searchBtn.setBackground(darkGray);
 		searchBtn.setForeground(Color.WHITE);
+		
+		request = new RequestDialog(memberFrame, gamePanel, requestLabel);
+		
+		requestListener = new MemberRequestListener(request, gamePanel);
+		requestLabel.addMouseListener(requestListener);
+		
+		listener = new SearchListener(searchWordTxt, this);
+		searchWordTxt.addKeyListener(listener);
 		searchBtn.addActionListener(listener);
 		
 		this.add(js);
@@ -94,6 +103,10 @@ public class MemberPanel extends JPanel {
 		
 	}
 	
+	public JLabel getNameLabel() {
+		return nameLabel;
+	}
+
 	public DefaultTableModel getModel() {
 		return model;
 	}

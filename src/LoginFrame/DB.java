@@ -288,11 +288,59 @@ public class DB {
 			e.printStackTrace();
 		}
 	}
-	// test용 main 메소드
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
-		DB db = new DB();
-		String a = db.randomWord();
-		System.out.println(a);
-		
+	public void recallRequest(DefaultTableModel model, JTable table) {
+		connect();
+		resetWordList(model, table);
+		try {
+			srs = stmt.executeQuery("select * from request");
+			while(srs.next()) {
+				String id = srs.getString("id");
+				String name = srs.getString("name");
+				String addOrdelete = srs.getString("add/delete");
+				String content = srs.getString("content");
+				Object data [] = {id, name, addOrdelete, content};
+				model.addRow(data);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	// insert request
+	public void insertRequest(String id, String name, String addDelete, String content) {
+		connect();
+			try {
+				sql = "insert into request values(?, ?, ?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, id);
+				pstmt.setString(2, name);
+				pstmt.setString(3, addDelete);
+				pstmt.setString(4, content);
+				
+				result = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+	}
+	// delete request
+	public void deleteRequest(String id, String content) {
+		connect();
+			try {
+				stmt.executeUpdate("delete from request where content = '" + content + "'");
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+	}
+	// test용 main 메소드
+//	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+//		DB db = new DB();
+//		db.deleteRequest("test");
+//		
+//	}
 }

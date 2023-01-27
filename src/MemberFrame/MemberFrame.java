@@ -35,8 +35,9 @@ public class MemberFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(null);
-		memberPanel = new MemberPanel();
+		
 		gamePanel = new GamePanel();
+		memberPanel = new MemberPanel(this, gamePanel);
 		
 		JTabbedPane pane = tab();
 		pane.setBounds(0, 0, 500, 500);

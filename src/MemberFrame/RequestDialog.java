@@ -6,83 +6,118 @@ import java.awt.Container;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 // 다시 생각해보는 것도 좋음
 public class RequestDialog extends JDialog{
 	
-	private JLabel selectAD = new JLabel("1. 원하시는 것을 선택해주세요.");
-	private JLabel opnionAD = new JLabel("2. 요청사항을 입력해주세요.");
-	private JRadioButton addRadioBtn = new JRadioButton("추가");
-	private JRadioButton modifyRadioBtn = new JRadioButton("수정");
-	private ButtonGroup radioBtnGroup = new ButtonGroup();
-	private JTextArea opnionArea = new JTextArea(10, 10);
-	private JLabel noticeLabel = new JLabel("* 요청사항이 무조건 반영되는 것은 아닌 점 양해 부탁드립니다.");
-	private JButton submitBtn = new JButton("submit");
+	private JLabel selectLabel;
+	private JLabel opnionLabel;
+	private JRadioButton addRadioBtn;
+	private JRadioButton modifyRadioBtn;
+	private ButtonGroup radioBtnGroup;
+	private JTextArea opnionArea;
+	private JScrollPane scrollPane;
+	private JLabel noticeLabel;
+	private JButton submitBtn;
 	
 	private JLabel requestLabel;
 	private MemberRequestListener requestListener;
 	
 	private FontColorFrame fontNcolor = new FontColorFrame();
 	
-	public RequestDialog(JFrame frame, JLabel requestLabel) {
-		super(frame);
+	private JLabel nameLabel;
+	
+	public RequestDialog(MemberFrame memberFrame, GamePanel gamePanel, JLabel requestLabel) {
+		super(memberFrame);
 		this.requestLabel = requestLabel;
 		
-		requestListener = new MemberRequestListener(this);
+		nameLabel = gamePanel.getNameLabel();
 		
 		setTitle("Request");
 		Container c = getContentPane();
 		c.setBackground(fontNcolor.getLightGray());
 		c.setLayout(null);
 		
-		selectAD.setFont(fontNcolor.getSanserifBig());
-		selectAD.setForeground(fontNcolor.getDarkGray());
-		selectAD.setBounds(20, 45, 300, 30);
+		selectLabel = new JLabel("1. 원하시는 것을 선택해주세요.");
+		selectLabel.setFont(fontNcolor.getSanserifBig());
+		selectLabel.setForeground(fontNcolor.getDarkGray());
+		selectLabel.setBounds(20, 45, 300, 30);
 		
+		radioBtnGroup = new ButtonGroup();
+		addRadioBtn = new JRadioButton("추가");
 		addRadioBtn.setFont(fontNcolor.getSanserifNormal());
 		addRadioBtn.setForeground(fontNcolor.getDarkGray());
 		addRadioBtn.setSelected(true);
 		addRadioBtn.setBounds(40, 85, 75, 25);
 		radioBtnGroup.add(addRadioBtn);
+		
+		modifyRadioBtn = new JRadioButton("수정");
 		modifyRadioBtn.setFont(fontNcolor.getSanserifNormal());
 		modifyRadioBtn.setForeground(fontNcolor.getDarkGray());
 		modifyRadioBtn.setBounds(120, 85, 75, 25);
 		radioBtnGroup.add(modifyRadioBtn);
 		
-		opnionAD.setFont(fontNcolor.getSanserifBig());
-		opnionAD.setForeground(fontNcolor.getDarkGray());
-		opnionAD.setBounds(20, 135, 300, 30);
+		opnionLabel = new JLabel("2. 요청사항을 입력해주세요.");
+		opnionLabel.setFont(fontNcolor.getSanserifBig());
+		opnionLabel.setForeground(fontNcolor.getDarkGray());
+		opnionLabel.setBounds(20, 135, 300, 30);
 		
+		opnionArea = new JTextArea();
 		opnionArea.setFont(fontNcolor.getSanserifsmall());
-		opnionArea.setBounds(20, 175, 400, 100);
+		opnionArea.setLineWrap(true);
+		scrollPane = new JScrollPane(opnionArea);
+		scrollPane.setBounds(20, 175, 400, 100);
 		
+		noticeLabel = new JLabel("* 요청사항이 무조건 반영되는 것은 아닌 점 양해 부탁드립니다.");
 		noticeLabel.setFont(fontNcolor.getSanserifnotice());
 		noticeLabel.setForeground(fontNcolor.getLittlelightGray());
 		noticeLabel.setHorizontalAlignment(JLabel.CENTER);
 		noticeLabel.setBounds(20, 290, 400, 30);
 		
+		submitBtn = new JButton("submit");
 		submitBtn.setFont(fontNcolor.getSanserifNormal());
 		submitBtn.setBackground(fontNcolor.getNavy());
 		submitBtn.setForeground(Color.WHITE);
 		submitBtn.setBounds(150, 330, 150, 30);
 		
+		requestListener = new MemberRequestListener(this, gamePanel);
 		submitBtn.addActionListener(requestListener);
 		
-		c.add(selectAD);
+		c.add(selectLabel);
 		c.add(addRadioBtn);
 		c.add(modifyRadioBtn);
-		c.add(opnionAD);
-		c.add(opnionArea);
+		c.add(opnionLabel);
+		c.add(scrollPane);
 		c.add(noticeLabel);
 		c.add(submitBtn);
 		
 		setLocation(725, 320);
 		setSize(450, 450);
 		setResizable(false);
+	}
+
+	public JLabel getNameLabel() {
+		return nameLabel;
+	}
+
+	public JRadioButton getAddRadioBtn() {
+		return addRadioBtn;
+	}
+
+	public JRadioButton getModifyRadioBtn() {
+		return modifyRadioBtn;
+	}
+
+	public JTextArea getOpnionArea() {
+		return opnionArea;
+	}
+
+	public JButton getSubmitBtn() {
+		return submitBtn;
 	}
 
 	public JLabel getRequestLabel() {

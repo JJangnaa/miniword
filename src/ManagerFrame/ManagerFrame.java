@@ -51,7 +51,7 @@ public class ManagerFrame extends JFrame{
 		setLocation(700, 300);
 		setSize(500, 500);
 		setResizable(false);
-//		setVisible(true);
+		setVisible(true);
 	}
 	// 탭팬
 	private JTabbedPane tab() {
@@ -61,9 +61,9 @@ public class ManagerFrame extends JFrame{
 		return tabPane; 
 	}
 	// test용 메인메소드
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//		new ManagerFrame();
-//	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new ManagerFrame();
+	}
 
 }
