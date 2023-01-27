@@ -26,14 +26,16 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 	private JPasswordField pwTxt;
 	
 	private String name;
-	private JLabel tmpLabel;
+	private JLabel nameLabel;
 	
-	public LogInListener(JTextField idTxt, JPasswordField pwTxt, LogInFrame logInFrame) {
-		this.idTxt = idTxt;
-		this.pwTxt = pwTxt;
+	public LogInListener(LogInFrame logInFrame, ManagerFrame managerFrame, MemberFrame memberFrame) {
 		this.logInFrame = logInFrame;
-		this.managerFrame = new ManagerFrame();
-		this.memberFrame = new MemberFrame();
+		this.idTxt = logInFrame.getIdTxt();
+		this.pwTxt = logInFrame.getPwTxt();
+		
+		this.managerFrame = managerFrame;
+		this.memberFrame = memberFrame;
+		this.nameLabel = memberFrame.getNameLabel();
 	}
 	public void keyPressed(KeyEvent e) {
 		Object obj = e.getSource();
@@ -59,8 +61,7 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 						} else {
 							name = repDB.infoSurfID("name", "id", idTxt.getText());
 							JOptionPane.showMessageDialog(null, name + "님 환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
-							tmpLabel = memberFrame.getNameLabel();
-							tmpLabel.setText(name);
+							nameLabel.setText(name);
 							logInFrame.setVisible(false);
 							memberFrame.setVisible(true);
 						}
@@ -91,15 +92,22 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 					idTxt.setText("");
 					pwTxt.setText("");
 				} else {
-					JOptionPane.showMessageDialog(null, "환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
+					// 로그인 후 화면 연결
+					if(idTxt.getText().equals("ManagerJang")) {
+						JOptionPane.showMessageDialog(null, "Hello, Manager !", "Manager Mode", JOptionPane.PLAIN_MESSAGE);
+						logInFrame.setVisible(false);
+						managerFrame.setVisible(true);
+					} else {
+						name = repDB.infoSurfID("name", "id", idTxt.getText());
+						JOptionPane.showMessageDialog(null, name + "님 환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
+						nameLabel.setText(name);
+						logInFrame.setVisible(false);
+						memberFrame.setVisible(true);
+					}
 					idTxt.setText("");
 					pwTxt.setText("");
-					// 로그인 후 화면 연결
-					// + 로그인 정보에 따라 띄우는 창이 달라야 함. (관리자모드, 회원모드)
-					// ++ 회원모드로 로그인할 경우, 로그인 정보가 회원모드 내의 회원정보와 동일 해야함.
-					logInFrame.setVisible(false);
-					managerFrame.setVisible(true);
 				}
+				
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

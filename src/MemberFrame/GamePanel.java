@@ -41,9 +41,29 @@ public class GamePanel extends JPanel {
 	private JButton checkAnswerBtn;
 	private JButton retryBtn;
 	
+	private JLabel nameLabel;
+	private JLabel gradeLabel;
+	private JTextField gradeTxt;
+	
 	public GamePanel() {
 		setBackground(blueGreen);
 		setLayout(null);
+		
+		nameLabel = new JLabel();
+		nameLabel.setBounds(150, 0, 150, 20);
+		nameLabel.setHorizontalAlignment(JLabel.RIGHT);
+		nameLabel.setForeground(darkGray);
+		
+		gradeLabel = new JLabel("점수: ");
+		gradeLabel.setBounds(305, 0, 40, 20);
+		gradeLabel.setForeground(darkGray);
+		gradeLabel.setHorizontalAlignment(JLabel.RIGHT);
+		
+		gradeTxt = new JTextField("0");
+		gradeTxt.setBounds(350, 2, 40, 18);
+		gradeTxt.setEditable(false);
+		gradeTxt.setForeground(darkGray);
+		gradeTxt.setHorizontalAlignment(JLabel.RIGHT);
 		
 		chance = new JLabel("* 기회: 10번");
 		chance.setForeground(Color.WHITE);
@@ -63,6 +83,7 @@ public class GamePanel extends JPanel {
 		question = new JLabel();
 		try {	// 1) 단어 랜덤 추출
 			questionStr = db.randomWord();
+			System.out.println(questionStr);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,9 +127,10 @@ public class GamePanel extends JPanel {
 		retryBtn.setBounds(190, 350, 120, 28);
 		
 		// 리스너 달기
-		listener = new RetryButtonListener(question, chance, inputAnswer, questionStr, checkAnswerBtn);
+		listener = new RetryButtonListener(this);
 		retryBtn.addActionListener(listener);
 		checkAnswerBtn.addActionListener(listener);
+		
 		
 		this.add(chance);
 		this.add(question);
@@ -118,5 +140,37 @@ public class GamePanel extends JPanel {
 		this.add(checkAnswerBtn);
 		this.add(retryBtn);
 		
+	}
+	
+	public JLabel getNameLabel() {
+		return nameLabel;
+	}
+	
+	public JLabel getGradeLabel() {
+		return gradeLabel;
+	}
+
+	public JTextField getGradeTxt() {
+		return gradeTxt;
+	}
+
+	public JLabel getChance() {
+		return chance;
+	}
+
+	public JLabel getQuestion() {
+		return question;
+	}
+
+	public String getQuestionStr() {
+		return questionStr;
+	}
+
+	public JTextField getInputAnswer() {
+		return inputAnswer;
+	}
+
+	public JButton getCheckAnswerBtn() {
+		return checkAnswerBtn;
 	}
 }

@@ -103,11 +103,11 @@ public class DB {
 	}
 	
 		
-	// edit
-	public void updateValue(String col, String value, String col2, String value2) {
+	// grade 넣기
+	public void inputGrade(int grade, String name) {
 		connect();
 		try {
-			stmt.executeUpdate("update member set " + col + " = '" + value + "' where " + col2 + " = '"+ value2 +"'");
+			stmt.executeUpdate("update member set grade = '" + grade + "' where name = '"+ name +"'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

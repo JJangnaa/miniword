@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import ManagerFrame.ManagerFrame;
+import MemberFrame.MemberFrame;
+
 public class LogInFrame extends JFrame {
 	
 	// 회원가입 및 id/pw 찾기 다이얼로그 객체 생성
@@ -42,15 +45,19 @@ public class LogInFrame extends JFrame {
 	// 로그인 리스너
 	private LogInListener listener;
 	
+	private ManagerFrame managerFrame;
+	private MemberFrame memberFrame;
+
 	public LogInFrame() {
 		setTitle("MiniWord_LogIn");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(lightGray);
+		managerFrame = new ManagerFrame();
+		memberFrame = new MemberFrame();
+		listener = new LogInListener(this, managerFrame, memberFrame);
 		
-		listener = new LogInListener(idTxt, pwTxt, this);
-				
 		// 회원가입 및 id/pw 찾기 다이얼로그 매개변수 입력.
 		join = new JoinDialog(this, "Join");
 		seaIdPw = new SearchIdPw(this, "search for id/password");
@@ -115,6 +122,14 @@ public class LogInFrame extends JFrame {
 		setResizable(false);
 	}
 	
+	public JTextField getIdTxt() {
+		return idTxt;
+	}
+
+	public JPasswordField getPwTxt() {
+		return pwTxt;
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new LogInFrame();

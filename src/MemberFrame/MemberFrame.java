@@ -15,12 +15,13 @@ import LoginFrame.LogInListener;
 
 public class MemberFrame extends JFrame{
 	
-	private MemberPanel memberPanel = new MemberPanel();
-	private GamePanel gamePanel = new GamePanel();
+	private MemberPanel memberPanel;
+	private GamePanel gamePanel;
 	
 	private JLabel nameLabel;
 	private JLabel gradeLabel;
 	private JTextField gradeTxt;
+
 	private JButton logoutBtn;
 	private JLabel seperateLa1 = new JLabel("|");
 	private JLabel seperateLa2 = new JLabel("|");
@@ -34,29 +35,19 @@ public class MemberFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(null);
+		memberPanel = new MemberPanel();
+		gamePanel = new GamePanel();
 		
 		JTabbedPane pane = tab();
 		pane.setBounds(0, 0, 500, 500);
 		
-		nameLabel = new JLabel();
-		nameLabel = new JLabel();
-		nameLabel.setBounds(150, 0, 150, 20);
-		nameLabel.setHorizontalAlignment(JLabel.RIGHT);
-		nameLabel.setForeground(darkGray);
+		nameLabel = gamePanel.getNameLabel();
 		
 		seperateLa1.setBounds(304, 0, 3, 20);
 		seperateLa1.setForeground(lightGray);
 		
-		gradeLabel = new JLabel("점수: ");
-		gradeLabel.setBounds(305, 0, 40, 20);
-		gradeLabel.setForeground(darkGray);
-		gradeLabel.setHorizontalAlignment(JLabel.RIGHT);
-		
-		gradeTxt = new JTextField("0");
-		gradeTxt.setBounds(350, 2, 40, 18);
-		gradeTxt.setEditable(false);
-		gradeTxt.setForeground(darkGray);
-		gradeTxt.setHorizontalAlignment(JLabel.RIGHT);
+		gradeLabel = gamePanel.getGradeLabel();
+		gradeTxt = gamePanel.getGradeTxt();
 		
 		seperateLa2.setBounds(399, 0, 3, 20);
 		seperateLa2.setForeground(lightGray);
@@ -92,8 +83,14 @@ public class MemberFrame extends JFrame{
 		
 	}
 	
+	public void setNameLabel(String name) {
+		this.nameLabel.setText(name);
+	}
 	public JLabel getNameLabel() {
 		return nameLabel;
+	}
+	public JTextField getGradeTxt() {
+		return gradeTxt;
 	}
 	// test용 메인메소드
 //	public static void main(String[] args) {
