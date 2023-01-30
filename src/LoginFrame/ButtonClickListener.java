@@ -20,43 +20,42 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 	
 	private DB repDB = new DB();
 	private Dialog JoinDialog;
+	private JoinDialog joinDialog;
 	private String res;
 	private int yesNo;
 	private JLabel[] noticeLabel;
-	private JTextField [] repTxt;
-	private JPasswordField [] repPw;
-	private JButton [] repBtn;
+	private JTextField [] joinTxt;
+	private JPasswordField [] pwJoinTxt;
 	
-	public ButtonClickListener(JTextField [] repTxt, JButton[] repBtn, JPasswordField [] repPw, JLabel[] noticeLabel, Dialog JoinDialog){
-		this.repBtn = repBtn;
-		this.repTxt = repTxt;
-		this.repPw = repPw;
-		this.noticeLabel = noticeLabel;
-		this.JoinDialog = JoinDialog;
+	public ButtonClickListener(JoinDialog joinDialog){
+		this.joinDialog = joinDialog;
+		this.joinTxt = joinDialog.getJoinTxt();
+		this.pwJoinTxt = joinDialog.getPwJoinTxt();
+		this.noticeLabel = joinDialog.getNoticeLabel();
 	}
 	
 	// key 리스너(적용항목: id 및 name 라벨)
 	public void keyPressed(KeyEvent e) {
 		Object obj = e.getSource();
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if(obj == repTxt[0]) {
+			if(obj == joinTxt[0]) {
 				try {
-					if(repTxt[0].getText().equals("")) {
+					if(joinTxt[0].getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "입력된 것이 없습니다.\n원하시는 name을 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-						repTxt[0].setText("");
+						joinTxt[0].setText("");
 						
 					} else {
-						res = repDB.memberSurf("name", repTxt[0].getText());
+						res = repDB.memberSurf("name", joinTxt[0].getText());
 						if(res != null) {
 							JOptionPane.showMessageDialog(null, "이미 있는 name 입니다.\n 다른 name을 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-							repTxt[0].setText("");
+							joinTxt[0].setText("");
 						} else if (res == null){
 							yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 name 입니다.\n사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
 							if(yesNo == JOptionPane.NO_OPTION) {
-								repTxt[0].setText("");
+								joinTxt[0].setText("");
 							} else {
 								noticeLabel[0].setText("중복확인 완료");
-								repTxt[0].setEditable(false);
+								joinTxt[0].setEditable(false);
 							}
 						}
 					}
@@ -66,22 +65,22 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 				}
 			} else {
 				try {
-					if(repTxt[1].getText().equals("")) {
+					if(joinTxt[1].getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "입력된 것이 없습니다.\n원하시는 id를 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-						repTxt[1].setText("");
+						joinTxt[1].setText("");
 						
 					} else {
-						res = repDB.memberSurf("id", repTxt[1].getText());
+						res = repDB.memberSurf("id", joinTxt[1].getText());
 						if(res != null) {
 							JOptionPane.showMessageDialog(null, "이미 있는 id 입니다.\n 다른 id를 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-							repTxt[1].setText("");
+							joinTxt[1].setText("");
 						} else if (res == null){
 							yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 id 입니다\n사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
 							if(yesNo == JOptionPane.NO_OPTION) {
-								repTxt[1].setText("");
+								joinTxt[1].setText("");
 							} else {
 								noticeLabel[1].setText("ID 중복확인 완료");
-								repTxt[1].setEditable(false);
+								joinTxt[1].setEditable(false);
 							}
 						}
 					}
@@ -100,22 +99,22 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 		JButton btn = (JButton) e.getSource();
 		if(e.getActionCommand()=="중복확인") {	  // name
 			try {
-				if(this.repTxt[0].getText().equals("")) {
+				if(this.joinTxt[0].getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "입력된 것이 없습니다.\n원하시는 name을 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-					this.repTxt[0].setText("");
+					this.joinTxt[0].setText("");
 					
 				} else {
-					res = repDB.memberSurf("name", this.repTxt[0].getText());
+					res = repDB.memberSurf("name", this.joinTxt[0].getText());
 					if(res != null) {
 						JOptionPane.showMessageDialog(null, "이미 있는 name 입니다.\n 다른 name을 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-						this.repTxt[0].setText("");
+						this.joinTxt[0].setText("");
 					} else if (res == null){
 						yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 name 입니다.\n사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
 						if(yesNo == JOptionPane.NO_OPTION) {
-							this.repTxt[0].setText("");
+							this.joinTxt[0].setText("");
 						} else {
 							noticeLabel[0].setText("중복확인 완료");
-							repTxt[0].setEditable(false);
+							joinTxt[0].setEditable(false);
 						}
 					}
 				}
@@ -124,22 +123,22 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 			}
 		} else if(e.getActionCommand()=="ID 중복확인") {	// id
 			try {
-				if(this.repTxt[1].getText().equals("")) {
+				if(this.joinTxt[1].getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "입력된 것이 없습니다.\n원하시는 id를 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-					this.repTxt[1].setText("");
+					this.joinTxt[1].setText("");
 					
 				} else {
-					res = repDB.memberSurf("name", this.repTxt[1].getText());
+					res = repDB.memberSurf("name", this.joinTxt[1].getText());
 					if(res != null) {
 						JOptionPane.showMessageDialog(null, "이미 있는 id 입니다.\n 다른 id를 입력해주세요.", "Warning", JOptionPane.WARNING_MESSAGE);
-						this.repTxt[1].setText("");
+						this.joinTxt[1].setText("");
 					} else if (res == null){
 						yesNo = JOptionPane.showConfirmDialog(null, "사용 가능한 id 입니다.\n사용하시겠습니까?", "Correct", JOptionPane.YES_NO_OPTION);
 						if(yesNo == JOptionPane.NO_OPTION) {
-							this.repTxt[1].setText("");
+							this.joinTxt[1].setText("");
 						} else {
 							noticeLabel[1].setText("ID 중복확인 완료");
-							repTxt[1].setEditable(false);
+							joinTxt[1].setEditable(false);
 						}
 					}
 				}
@@ -150,8 +149,9 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 			if(essentialValue()==true) {
 				yesNo = JOptionPane.showConfirmDialog(null, "입력한 정보로 회원가입 하시겠습니까?", "", JOptionPane.YES_NO_OPTION);
 				if(yesNo == JOptionPane.YES_OPTION) {
-					repDB.firstValue(repTxt, repPw);
+					repDB.firstValue(joinTxt, pwJoinTxt);
 					JOptionPane.showMessageDialog(null, "회원가입이 완료 되었습니다.", "Congratulation!!!", JOptionPane.PLAIN_MESSAGE);
+					joinDialog.setVisible(false);
 					reset();
 				} 
 			}
@@ -160,20 +160,20 @@ public class ButtonClickListener extends KeyAdapter implements ActionListener{
 		}
 	}
 	public void reset() {
-		repTxt[0].setEditable(true);
-		repTxt[0].setText("");
-		repTxt[1].setEditable(true);
-		repTxt[1].setText("");
+		joinTxt[0].setEditable(true);
+		joinTxt[0].setText("");
+		joinTxt[1].setEditable(true);
+		joinTxt[1].setText("");
 		noticeLabel[0].setText("");
 		noticeLabel[1].setText("");
-		repPw[0].setText("");
-		repPw[1].setText("");
+		pwJoinTxt[0].setText("");
+		pwJoinTxt[1].setText("");
 		noticeLabel[3].setText(">> 비밀번호 확인");
 		noticeLabel[3].setForeground(new Color(127, 127, 127));
 		noticeLabel[3].setForeground(new Color(127, 127, 127));
 		noticeLabel[3].setFont(new Font("SanSerif", Font.ITALIC, 12));
-		repTxt[3].setText("");
-		repTxt[4].setText("");
+		joinTxt[3].setText("");
+		joinTxt[4].setText("");
 		
 	}
 	// 올바른 JOIN을 위한 필터

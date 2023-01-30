@@ -65,8 +65,8 @@ public class WordModifyListener implements ActionListener{
 				if(result != null && !(existKor.equals(inputKor))) {
 					int answer = JOptionPane.showConfirmDialog(null, "정말로 수정 하시겠습니까?", "", JOptionPane.ERROR_MESSAGE);
 					if(answer == JOptionPane.YES_OPTION) {
-						newKor = existKor + ", " + inputKor;
-						wordDB.updateValue(newKor, inputEng);
+//						newKor = inputKor;
+						wordDB.updateValue(inputKor, inputEng);
 						JOptionPane.showMessageDialog(null, "수정 되었습니다.", "", JOptionPane.INFORMATION_MESSAGE);
 					}
 				} else {

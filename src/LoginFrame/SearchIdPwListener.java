@@ -38,11 +38,11 @@ public class SearchIdPwListener extends KeyAdapter implements ActionListener {
 		// TODO Auto-generated method stub
 		JButton btn = (JButton)e.getSource();
 		if((btn.getText()).equals("search")) {
-			if(selectedRaBtn(selIdPwBtn) == true) {	// 라디오버튼이 ID 에 선택되어 있음
+			if(selIdPwBtn[1].isSelected()) {	// 라디오버튼이 ID 에 선택되어 있음
 				if(!(wantTxt[0].getText()).equals("")){
 					try {
 						resName = repDB.memberSurf("name", wantTxt[0].getText());
-						if(resName != null) {
+						if(resName != null && !resName.equals("관리자")) {
 							String ID = repDB.infoSurfID("id", "name", wantTxt[0].getText());
 							QnALabel[3].setText(ID);
 						} else {
@@ -56,12 +56,12 @@ public class SearchIdPwListener extends KeyAdapter implements ActionListener {
 					JOptionPane.showMessageDialog(null, "입력된 정보가 없습니다.", "Please input information", JOptionPane.WARNING_MESSAGE);
 				}
 				
-			} else {	// 라디오버튼이 PW 에 선택되어 있음
+			} else if (selIdPwBtn[0].isSelected()) {	// 라디오버튼이 PW 에 선택되어 있음
 				if(!(wantTxt[0].getText()).equals("") && !(wantTxt[1].getText()).equals("")) {
 					try {
 						resName = repDB.memberSurf("name", wantTxt[0].getText());
 						resId = repDB.memberSurf("id", wantTxt[1].getText());
-						if(resName != null && resId != null) {
+						if(resName != null && resId != null && !resName.equals("관리자") && !resId.equals("ManagerJang")) {
 							String ID = repDB.infoSurfPW("pw", "name", "id", wantTxt[0].getText(), wantTxt[1].getText());
 							QnALabel[3].setText(ID);
 						} else {

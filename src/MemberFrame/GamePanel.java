@@ -47,6 +47,8 @@ public class GamePanel extends JPanel {
 	private JLabel nameLabel;
 	private JLabel gradeLabel;
 	private JTextField gradeTxt;
+	// 힌트 및 정답확인
+	private JLabel hint;
 	// 생성자
 	public GamePanel() {
 		setBackground(blueGreen);
@@ -100,26 +102,32 @@ public class GamePanel extends JPanel {
 		question.setHorizontalAlignment(JLabel.CENTER);
 		question.setBorder(border);
 		
-		answer = new JTextField("정답");
+		answer = new JTextField("Answer");
 		answer.setEditable(false);
 		answer.setBackground(lightGray);
 		answer.setForeground(likeBlack);
 		answer.setFont(new Font("SanSerif", Font.BOLD, 16));
 		answer.setHorizontalAlignment(JTextField.CENTER);
 		answer.setBorder(border);
-		answer.setBounds(98, 295, 70, 20);
+		answer.setBounds(70, 295, 70, 20);
 		
 		inputAnswer = new JTextField();
 		inputAnswer.setBorder(border);
 		inputAnswer.setFont(new Font("SanSerif", Font.PLAIN, 14));
-		inputAnswer.setBounds(170, 295, 150, 20);
+		inputAnswer.setBounds(142, 295, 150, 20);
 		
 		checkAnswerBtn = new JButton("확인");
 		checkAnswerBtn.setBackground(lightBlue);
 		checkAnswerBtn.setForeground(likeBlack);
 		checkAnswerBtn.setFont(new Font("SanSerif", Font.BOLD, 16));
 		checkAnswerBtn.setBorder(submitBorder);
-		checkAnswerBtn.setBounds(335, 295, 70, 20);
+		checkAnswerBtn.setBounds(307, 295, 70, 20);
+		
+		hint = new JLabel("hint");
+		hint.setFont(new Font("SanSerif", Font.PLAIN, 13));
+		hint.setForeground(Color.WHITE);
+		hint.setHorizontalAlignment(JLabel.LEFT);
+		hint.setBounds(380, 295, 110, 20);
 		
 		retryBtn = new JButton("Retry");
 		retryBtn.setBackground(deepBlue);
@@ -132,10 +140,11 @@ public class GamePanel extends JPanel {
 		listener = new RetryButtonListener(this);
 		retryBtn.addActionListener(listener);
 		checkAnswerBtn.addActionListener(listener);
-		
+		hint.addMouseListener(listener);
 		
 		
 		this.add(chance);
+		this.add(hint);
 		this.add(question);
 		this.add(quiz);
 		this.add(answer);
@@ -183,6 +192,14 @@ public class GamePanel extends JPanel {
 
 	public RetryButtonListener getListener() {
 		return listener;
+	}
+
+	public JLabel getHint() {
+		return hint;
+	}
+
+	public void setHint(JLabel hint) {
+		this.hint = hint;
 	}
 	
 }

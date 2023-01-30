@@ -1,5 +1,6 @@
 package LoginFrame;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -48,9 +49,10 @@ public class LogOutListener extends MouseAdapter implements ActionListener{
 	private JButton checkAnswerBtn;
 	private JLabel chance;
 	private RequestDialog request;
+	private JLabel hint;
 	
 	// 관리자 창 생성자
-	public LogOutListener(LogInFrame logInFrame, ManagerFrame managerFrame) { //, WordAdminPanel adminPanel, RequestAdminPanel requestPanel
+	public LogOutListener(LogInFrame logInFrame, ManagerFrame managerFrame) {
 		this.logInFrame = logInFrame;
 		this.managerFrame = managerFrame;
 		
@@ -61,7 +63,7 @@ public class LogOutListener extends MouseAdapter implements ActionListener{
 		this.checkDialog = requestPanel.getCheckDialog();
 	}
 	// 회원 창 생성자
-	public LogOutListener(LogInFrame logInFrame, MemberFrame memberFrame) { // , MemberPanel memberPanel, GamePanel gamePanel
+	public LogOutListener(LogInFrame logInFrame, MemberFrame memberFrame) {
 		this.logInFrame = logInFrame;
 		this.memberFrame = memberFrame;
 		
@@ -76,6 +78,7 @@ public class LogOutListener extends MouseAdapter implements ActionListener{
 		this.inputAnswer = gamePanel.getInputAnswer();
 		this.checkAnswerBtn = gamePanel.getCheckAnswerBtn();
 		this.chance = gamePanel.getChance();
+		this.hint = gamePanel.getHint();
 		
 	}
 	// 관리자 창 로그아웃 버튼 클릭시
@@ -144,7 +147,10 @@ public class LogOutListener extends MouseAdapter implements ActionListener{
 			listener.setMultiuse(true);
 			// 4. RequestCheckDialog 요청사항 란 비우기
 			request.getOpnionArea().setText("");
-			
+			// 5. hint 초기화
+			hint.setEnabled(true);
+			hint.setText("hint");
+			hint.setFont(new Font("SanSerif", Font.PLAIN, 13));
 		}
 		
 	}

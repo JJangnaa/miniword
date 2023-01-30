@@ -44,7 +44,7 @@ public class JoinDialog extends JDialog {
 	private Color navy = new Color(0, 32, 96);
 	
 	// 리스너 객체 생성
-	private ButtonClickListener listener = new ButtonClickListener(joinTxt, joinBtn, pwJoinTxt, noticeLabel, this);
+	private ButtonClickListener listener;
 	private PwListener pwListener = new PwListener(pwJoinTxt, joinTxt, noticeLabel);
 	private PhoneListener phoneListener = new PhoneListener(joinTxt);
 	
@@ -54,6 +54,8 @@ public class JoinDialog extends JDialog {
 		c.setLayout(null);
 		c.setBackground(lightGray);
 		
+		listener = new ButtonClickListener(this);
+				
 		for(int i=0; i<nameStr.length; i++) {
 			if(i<6) {
 				logLabel[i] = new JLabel(nameStr[i]);
@@ -158,6 +160,26 @@ public class JoinDialog extends JDialog {
 		setLocation(700, 300);
 		setSize(600, 600);
 		setResizable(true);
+	}
+
+	public JTextField[] getJoinTxt() {
+		return joinTxt;
+	}
+
+	public JButton[] getJoinBtn() {
+		return joinBtn;
+	}
+
+	public JPasswordField[] getPwJoinTxt() {
+		return pwJoinTxt;
+	}
+
+	public void setPwJoinTxt(JPasswordField[] pwJoinTxt) {
+		this.pwJoinTxt = pwJoinTxt;
+	}
+
+	public JLabel[] getNoticeLabel() {
+		return noticeLabel;
 	}
 	
 

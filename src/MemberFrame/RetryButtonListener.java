@@ -1,7 +1,10 @@
 package MemberFrame;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -11,7 +14,7 @@ import javax.swing.JTextField;
 
 import LoginFrame.DB;
 
-public class RetryButtonListener implements ActionListener{
+public class RetryButtonListener extends MouseAdapter implements ActionListener{
 	
 	private DB db = new DB();
 	private RandomQuestion randomStr;
@@ -26,10 +29,14 @@ public class RetryButtonListener implements ActionListener{
 	private boolean disposable = true;
 	private boolean multiuse = true;
 	private String disposableStr;
+	private String mean;
 	private String questionStr;
 	private int pullGrade;
 	private int pushGrade;
 	private JLabel logInName;
+	
+	private JLabel hint;
+	private int yesNo;
 	
 	public RetryButtonListener(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -38,7 +45,47 @@ public class RetryButtonListener implements ActionListener{
 		this.disposableStr = gamePanel.getQuestionStr();
 		this.inputAnswer = gamePanel.getInputAnswer();
 		this.checkAnswerBtn = gamePanel.getCheckAnswerBtn();
-		this.logInName =gamePanel.getNameLabel(); 
+		this.logInName = gamePanel.getNameLabel();
+		this.hint = gamePanel.getHint();
+		
+	}
+	// hint 리스너
+	public void mouseClicked(MouseEvent e) {
+		JLabel hintLa = (JLabel)e.getSource();
+		if(hintLa.getText().equals("hint") && hintLa.isEnabled()) {
+			if(chanceInt > 2) {
+				yesNo = JOptionPane.showConfirmDialog(null, "사용하시겠습니까?\n[주의사항]\n1.힌트는 한 번만 사용 가능\n2.사용시 기회 -2", "Are you sure?", JOptionPane.YES_NO_OPTION);
+				if(yesNo == JOptionPane.YES_OPTION) {
+					try {
+						if(disposable) {
+							mean = db.existKorSurf("kor", disposableStr);
+						} else {
+							mean = db.existKorSurf("kor", questionStr);
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					chanceInt -= 1;
+					chance.setText("* 기회: " + chanceInt + "번");
+					chanceInt -= 1;
+					JOptionPane.showMessageDialog(null, "이 단어의 뜻은 '" + mean + "' 입니다.", "Cheer up!", JOptionPane.INFORMATION_MESSAGE);
+					
+					hint.setText("정답 확인");
+					hint.setFont(new Font("SanSerif", Font.PLAIN, 11));
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "힌트를 사용할 수 없습니다.\n[이유 확인]\n기회가 3번 이상일 남아있을 때 사용 가능합니다.\n(사용시 기회 -2)", "Warning?", JOptionPane.ERROR_MESSAGE);
+			}
+		} else if (hintLa.getText().equals("정답 확인") && hintLa.isEnabled()) {
+			if(disposable) {
+				displsafinishSetting();
+				JOptionPane.showMessageDialog(null, "Fail ;(\nCorrect answer: " + disposableStr, "Try once more !", JOptionPane.ERROR_MESSAGE);
+			} else {
+				finishSetting();
+				JOptionPane.showMessageDialog(null, "Fail ;(\nCorrect answer: " + questionStr, "Try once more !", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 		
 	}
 	
@@ -174,6 +221,9 @@ public class RetryButtonListener implements ActionListener{
 	public void reset() {
 		chanceInt = 9;
 		chance.setText("* 기회: 10번");
+		hint.setEnabled(true);
+		hint.setText("hint");
+		hint.setFont(new Font("SanSerif", Font.PLAIN, 13));
 		multiuse = false;
 		checkAnswerBtn.setEnabled(true);
 		inputAnswer.setEnabled(true);
@@ -181,6 +231,7 @@ public class RetryButtonListener implements ActionListener{
 	// 기회소진 및 정답일 경우, 동일하게 필요한 세팅 (다회성용 메소드)
 	public void finishSetting() {
 		inputAnswer.setText("");
+		hint.setEnabled(false);
 		inputAnswer.setEnabled(false);
 		checkAnswerBtn.setEnabled(false);
 		multiuse = true;	// 차이점
@@ -188,6 +239,7 @@ public class RetryButtonListener implements ActionListener{
 	// 기회소진 및 정답일 경우, 동일하게 필요한 세팅 (일회성용 메소드)
 	public void displsafinishSetting() {
 		inputAnswer.setText("");
+		hint.setEnabled(false);
 		inputAnswer.setEnabled(false);
 		checkAnswerBtn.setEnabled(false);
 		disposable = false;	// 차이점
