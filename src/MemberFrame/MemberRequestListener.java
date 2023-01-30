@@ -14,7 +14,6 @@ import javax.swing.JTextArea;
 
 import LoginFrame.DB;
 
-// 전체적으로 손봐야함
 public class MemberRequestListener extends MouseAdapter implements ActionListener{
 	
 	private DB db = new DB();
@@ -52,7 +51,6 @@ public class MemberRequestListener extends MouseAdapter implements ActionListene
 		// TODO Auto-generated method stub
 		nameLabel = gamePanel.getNameLabel();
 		if(!(opnionArea.getText().equals(""))) {
-			System.out.println(requestLabel.getText());
 			int yesNo = JOptionPane.showConfirmDialog(null, "요청 하시겠습니까?", "Warning", JOptionPane.YES_NO_OPTION);
 			if(yesNo == JOptionPane.YES_OPTION) {
 				try {

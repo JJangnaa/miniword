@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -22,23 +23,26 @@ public class RequestCheckDialog extends JDialog {
 	
 	// 내용물
 	private JButton okBtn = new JButton("확인");
-	private JTextField goalTxt = new JTextField(" 단어 ");
-	private JTextArea request = new JTextArea(" 요청사항" + "\n");
+	private JLabel addNdel = new JLabel("단어 : ");
+	private JTextArea request = new JTextArea("");
 	
 	private RequestAdminPanel requestPanel;
+	private RequestTableClickListener listener;
 	// 생성자
-	public RequestCheckDialog(RequestAdminPanel requestPanel) {
-		this.requestPanel = requestPanel;
+	public RequestCheckDialog(JFrame frame, RequestAdminPanel requestPanel) {
+		super(frame, true);
 		setTitle("Check the request ");
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(lightGray);
 		
-		goalTxt.setFont(sanserifBig);
-		goalTxt.setBackground(Color.WHITE);
-		goalTxt.setBounds(15, 20, 400, 35);
-		goalTxt.setEditable(false);
-		c.add(goalTxt);
+		this.requestPanel = requestPanel;
+		
+		addNdel.setFont(sanserifBig);
+		addNdel.setBackground(Color.WHITE);
+		addNdel.setBounds(15, 20, 400, 35);
+		addNdel.setEnabled(false);
+		c.add(addNdel);
 		
 		request.setFont(sanserifBig);
 		request.setBackground(Color.WHITE);
@@ -50,15 +54,29 @@ public class RequestCheckDialog extends JDialog {
 		okBtn.setForeground(Color.WHITE);
 		okBtn.setFont(sanserifSmall);
 		okBtn.setBounds(350, 220, 65, 20);
-		okBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				goalTxt.setText(" 단어 ");
-				request.setText("");
-				setVisible(false);
-			}
-		});
+		
+		listener = new RequestTableClickListener(requestPanel, this);
+		okBtn.addActionListener(listener);
+//		okBtn.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				setVisible(false);
+//				addNdel.setText("단어 : ");
+//				request.setText("");
+//				listener.getPushRequest().clear();
+//			}
+//			
+//		});
+		
+		if(this.isVisible() == false) {
+			addNdel.setText("단어 : ");
+			request.setText("");
+			listener.getPushRequest().clear();
+		}
+		
+		
 		c.add(okBtn);
 		
 		setLocation(725, 400);
@@ -66,12 +84,27 @@ public class RequestCheckDialog extends JDialog {
 		setResizable(false);
 	}
 	
-	public JTextField getGoalTxt() {
-		return goalTxt;
+	public JLabel getGoalTxt() {
+		return addNdel;
 	}
 	public JTextArea getRequest() {
 		return request;
 	}
 	
+	public void setRequest(JTextArea request) {
+		this.request = request;
+	}
+	
+	public void setAddNdel(JLabel addNdel) {
+		this.addNdel = addNdel;
+	}
+
+	public JLabel getAddNdel() {
+		return addNdel;
+	}
+
+	public JButton getOkBtn() {
+		return okBtn;
+	}
 
 }

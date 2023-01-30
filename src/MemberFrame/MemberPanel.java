@@ -102,10 +102,6 @@ public class MemberPanel extends JPanel {
 		this.add(searchBtn);
 		
 	}
-	
-	public JLabel getNameLabel() {
-		return nameLabel;
-	}
 
 	public DefaultTableModel getModel() {
 		return model;
@@ -114,4 +110,21 @@ public class MemberPanel extends JPanel {
 	public JTable getTable() {
 		return table;
 	}
+
+	public JTextField getSearchWordTxt() {
+		return searchWordTxt;
+	}
+	
+	public JLabel getRequestLabel() {
+		return requestLabel;
+	}
+
+	public JComboBox<String> getSelEngKorCombo() {
+		return selEngKorCombo;
+	}
+
+	public RequestDialog getRequest() {
+		return request;
+	}
+	
 }

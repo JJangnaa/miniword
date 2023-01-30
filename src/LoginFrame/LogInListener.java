@@ -12,6 +12,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ManagerFrame.ManagerFrame;
+import ManagerFrame.RequestAdminPanel;
+import ManagerFrame.WordAdminPanel;
 import MemberFrame.MemberFrame;
 
 public class LogInListener extends KeyAdapter implements ActionListener {
@@ -20,13 +22,19 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 	private ManagerFrame managerFrame;
 	private MemberFrame memberFrame;
 	private LogInFrame logInFrame;
+	
+	private WordAdminPanel adminPanel;
+	private RequestAdminPanel requestPanel;
+	
 	private String resId;
 	private String resPw;
 	private JTextField idTxt;
 	private JPasswordField pwTxt;
 	
 	private String name;
+	private String grade;
 	private JLabel nameLabel;
+	private JTextField gradeTxt;
 	
 	public LogInListener(LogInFrame logInFrame, ManagerFrame managerFrame, MemberFrame memberFrame) {
 		this.logInFrame = logInFrame;
@@ -36,6 +44,10 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 		this.managerFrame = managerFrame;
 		this.memberFrame = memberFrame;
 		this.nameLabel = memberFrame.getNameLabel();
+		this.gradeTxt = memberFrame.getGradeTxt();
+		
+		this.adminPanel = managerFrame.getAdminPanel();
+		this.requestPanel = managerFrame.getRequestPanel();
 	}
 	public void keyPressed(KeyEvent e) {
 		Object obj = e.getSource();
@@ -58,10 +70,14 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 							JOptionPane.showMessageDialog(null, "Hello, Manager !", "Manager Mode", JOptionPane.PLAIN_MESSAGE);
 							logInFrame.setVisible(false);
 							managerFrame.setVisible(true);
+							// 요청사항 리스트 다시 불러오기
+							repDB.selectAllrequest(requestPanel.getWordList().getModel(), requestPanel.getWordList().getTable());
 						} else {
 							name = repDB.infoSurfID("name", "id", idTxt.getText());
+							grade = repDB.infoSurfID("grade", "id", idTxt.getText());
 							JOptionPane.showMessageDialog(null, name + "님 환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
 							nameLabel.setText(name);
+							gradeTxt.setText(grade);
 							logInFrame.setVisible(false);
 							memberFrame.setVisible(true);
 						}
@@ -97,10 +113,14 @@ public class LogInListener extends KeyAdapter implements ActionListener {
 						JOptionPane.showMessageDialog(null, "Hello, Manager !", "Manager Mode", JOptionPane.PLAIN_MESSAGE);
 						logInFrame.setVisible(false);
 						managerFrame.setVisible(true);
+						// 요청사항 리스트 다시 불러오기
+						repDB.selectAllrequest(requestPanel.getWordList().getModel(), requestPanel.getWordList().getTable());
 					} else {
 						name = repDB.infoSurfID("name", "id", idTxt.getText());
+						grade = repDB.infoSurfID("grade", "id", idTxt.getText());
 						JOptionPane.showMessageDialog(null, name + "님 환영합니다 :)", "LogIn Success !!!", JOptionPane.PLAIN_MESSAGE);
 						nameLabel.setText(name);
+						gradeTxt.setText(grade);
 						logInFrame.setVisible(false);
 						memberFrame.setVisible(true);
 					}

@@ -45,7 +45,7 @@ public class DBListPanel extends JPanel {
 		setLayout(null);
 		model = new DefaultTableModel(ob, requestStr);
 		table = new JTable(model);
-		wordDB.selectAllrequest(model, tables);
+		wordDB.selectAllrequest(model, table);
 		js = new JScrollPane(table);
 		js.setBounds(0, 0, 420, 200);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	// 하나의 행만 선택할 수 있게 하기 위함.
@@ -82,7 +82,9 @@ public class DBListPanel extends JPanel {
 	public DefaultTableModel getModel() {
 		return model;
 	}
-	
+	public JComboBox<String> getSelEngKorCombo() {
+		return selEngKorCombo;
+	}
 	
 
 }

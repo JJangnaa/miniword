@@ -11,7 +11,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-// 다시 생각해보는 것도 좋음
 public class RequestDialog extends JDialog{
 	
 	private JLabel selectLabel;
@@ -126,5 +125,9 @@ public class RequestDialog extends JDialog{
 
 	public void setRequestLabel(JLabel requestLabel) {
 		this.requestLabel = requestLabel;
+	}
+
+	public JLabel getOpnionLabel() {
+		return opnionLabel;
 	}
 }

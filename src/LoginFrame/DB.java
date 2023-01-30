@@ -271,24 +271,7 @@ public class DB {
 	}
 // --------------------------------------------------------------
 /*requestDB section*/
-	public void selectAllrequest(DefaultTableModel model, String col) {
-		connect();
-		try {
-			srs = stmt.executeQuery("select * from " + col);
-			while(srs.next()) {
-				String id = srs.getString("id");
-				String name = srs.getString("name");
-				String addOrdelete = srs.getString("add/delete");
-				String content = srs.getString("content");
-				Object data [] = {id, name, addOrdelete, content};
-				model.addRow(data);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	public void recallRequest(DefaultTableModel model, JTable table) {
+	public void selectAllrequest(DefaultTableModel model, JTable table) {
 		connect();
 		resetWordList(model, table);
 		try {
@@ -337,7 +320,8 @@ public class DB {
 				e.printStackTrace();
 			}
 	}
-	// test용 main 메소드
+// --------------------------------------------------------------
+// test용 main 메소드
 //	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //		DB db = new DB();
 //		db.deleteRequest("test");

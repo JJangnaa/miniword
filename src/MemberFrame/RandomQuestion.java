@@ -39,5 +39,12 @@ public class RandomQuestion {
 		return randomStr;
 	}
 	
+	public String getQuestionStr() {
+		return questionStr;
+	}
+
+	public void setQuestionStr(String questionStr) {
+		this.questionStr = questionStr;
+	}
 	
 }

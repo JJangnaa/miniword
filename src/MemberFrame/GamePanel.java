@@ -14,39 +14,40 @@ import javax.swing.border.LineBorder;
 import LoginFrame.DB;
 
 public class GamePanel extends JPanel {
-	
+	// 색상 설정
 	private Color blueGreen = new Color(50, 142, 160);
 	private Color lightBlue = new Color(224, 239, 242);
 	private Color deepBlue = new Color(161, 173, 186);
 	private Color likeBlack = new Color(38, 38, 38);
 	private Color darkGray = new Color(127, 127, 127);
 	private Color lightGray = new Color(235, 235, 235);
-	
+	// 테두리 설정
 	private LineBorder border = new LineBorder(lightGray, 2);
 	private LineBorder submitBorder = new LineBorder(lightBlue, 2, true);
 	private LineBorder retryBorder = new LineBorder(deepBlue, 2, true);
-	
+	// 기회 및 문제 라벨
 	private JLabel chance;
 	private JLabel question;
-	
+	// 랜덤으로 출력된 문제 & 그 문제의 철자 랜덤으로 변경
 	private String questionStr;
 	private RandomQuestion randomStr;
-	
+	// DB 객체 및 리스너 객체
 	private DB db = new DB();
 	private RetryButtonListener listener;
 	private MemberRequestListener requestListener;
-	
+	// "Quiz" 및 "정답"
 	private JTextField quiz;
 	private JTextField answer;
+	// 정답입력 텍스트필드
 	private JTextField inputAnswer;
+	// 확인 및 retry 버튼
 	private JButton checkAnswerBtn;
 	private JButton retryBtn;
-	
+	// "닉네임", "점수", 점수입력 텍스트필드
 	private JLabel nameLabel;
 	private JLabel gradeLabel;
 	private JTextField gradeTxt;
-	
-	
+	// 생성자
 	public GamePanel() {
 		setBackground(blueGreen);
 		setLayout(null);
@@ -61,7 +62,7 @@ public class GamePanel extends JPanel {
 		gradeLabel.setForeground(darkGray);
 		gradeLabel.setHorizontalAlignment(JLabel.RIGHT);
 		
-		gradeTxt = new JTextField("0");
+		gradeTxt = new JTextField();
 		gradeTxt.setBounds(350, 2, 40, 18);
 		gradeTxt.setEditable(false);
 		gradeTxt.setForeground(darkGray);
@@ -85,7 +86,6 @@ public class GamePanel extends JPanel {
 		question = new JLabel();
 		try {	// 1) 단어 랜덤 추출
 			questionStr = db.randomWord();
-//			System.out.println(questionStr);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,6 +168,10 @@ public class GamePanel extends JPanel {
 	public String getQuestionStr() {
 		return questionStr;
 	}
+	
+	public RandomQuestion getRandomStr() {
+		return randomStr;
+	}
 
 	public JTextField getInputAnswer() {
 		return inputAnswer;
@@ -176,4 +180,9 @@ public class GamePanel extends JPanel {
 	public JButton getCheckAnswerBtn() {
 		return checkAnswerBtn;
 	}
+
+	public RetryButtonListener getListener() {
+		return listener;
+	}
+	
 }

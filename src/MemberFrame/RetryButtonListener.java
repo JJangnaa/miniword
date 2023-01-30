@@ -52,7 +52,6 @@ public class RetryButtonListener implements ActionListener{
 				// 단어 랜덤 추출
 				try {
 					questionStr = db.randomWord();
-					System.out.println(questionStr);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -192,6 +191,50 @@ public class RetryButtonListener implements ActionListener{
 		inputAnswer.setEnabled(false);
 		checkAnswerBtn.setEnabled(false);
 		disposable = false;	// 차이점
+	}
+	
+	public JLabel getChance() {
+		return chance;
+	}
+
+	public JTextField getInputAnswer() {
+		return inputAnswer;
+	}
+
+	public JButton getCheckAnswerBtn() {
+		return checkAnswerBtn;
+	}
+
+	public void setChanceInt(int chanceInt) {
+		this.chanceInt = chanceInt;
+	}
+
+	public int getChanceInt() {
+		return chanceInt;
+	}
+
+	public void setDisposable(boolean disposable) {
+		this.disposable = disposable;
+	}
+	
+	public boolean isDisposable() {
+		return disposable;
+	}
+	
+	public void setMultiuse(boolean multiuse) {
+		this.multiuse = multiuse;
+	}
+
+	public boolean isMultiuse() {
+		return multiuse;
+	}
+
+	public String getDisposableStr() {
+		return disposableStr;
+	}
+
+	public void setDisposableStr(String disposableStr) {
+		this.disposableStr = disposableStr;
 	}
 	
 

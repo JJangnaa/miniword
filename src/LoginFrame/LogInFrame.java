@@ -54,8 +54,9 @@ public class LogInFrame extends JFrame {
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(lightGray);
-		managerFrame = new ManagerFrame();
-		memberFrame = new MemberFrame();
+		
+		managerFrame = new ManagerFrame(this);
+		memberFrame = new MemberFrame(this);
 		listener = new LogInListener(this, managerFrame, memberFrame);
 		
 		// 회원가입 및 id/pw 찾기 다이얼로그 매개변수 입력.
@@ -120,6 +121,14 @@ public class LogInFrame extends JFrame {
 		setSize(500, 500);
 		setVisible(true);
 		setResizable(false);
+	}
+
+	public ManagerFrame getManagerFrame() {
+		return managerFrame;
+	}
+
+	public MemberFrame getMemberFrame() {
+		return memberFrame;
 	}
 	
 	public JTextField getIdTxt() {

@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import LoginFrame.LogInFrame;
+
 // 요청사항 패널
 public class RequestAdminPanel extends JPanel {
 	// 요청사항 불러오기 위함.
@@ -31,10 +33,16 @@ public class RequestAdminPanel extends JPanel {
 	private JLabel noticeLa = new JLabel("⚠ 요청 사항 확인 후 진행 ⚠");
 	// 상세 요청사항 확인가능한 프레임
 	private RequestCheckDialog checkDialog;
-	
+	// 요청사항 리스트 클릭 및 버튼 클릭시의 리스너
 	private RequestTableClickListener listener;
+	
+	private LogInFrame logInFrame;
+	
 	// 생성자
-	public RequestAdminPanel() {
+	public RequestAdminPanel(LogInFrame logInFrame) {
+		
+		this.logInFrame = logInFrame;
+		
 		setBackground(blueGreen);
 		setLayout(null);
 		
@@ -44,36 +52,33 @@ public class RequestAdminPanel extends JPanel {
 			btn[i].setFont(sanserifSmall);
 			btn[i].setBackground(darkGray);
 			btn[i].setBounds(btnX += pX, btnY, btnW, btnH);
-			if(i==1) {
-				btn[i].addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						checkDialog.setVisible(true);
-					}
-					
-				});
-			}
+			
 			this.add(btn[i]);
 		}
 		noticeLa.setForeground(Color.WHITE);
 		noticeLa.setFont(sanserifBig);
 		noticeLa.setBounds(75, 70, 400, 30);
 		
-		checkDialog = new RequestCheckDialog(this);
+		checkDialog = new RequestCheckDialog(logInFrame, this);
 		listener = new RequestTableClickListener(this, checkDialog);
-		
 		
 		wordList.setBounds(25, 110, 420, 200);
 		wordList.getTable().addMouseListener(listener);
 		
 		btn[0].addActionListener(listener);
+		btn[1].addActionListener(listener);
 		
 		this.add(wordList);
 		this.add(noticeLa);
 	}
 	public DBListPanel getWordList() {
 		return wordList;
+	}
+	public RequestCheckDialog getCheckDialog() {
+		return checkDialog;
+	}
+	public JButton[] getBtn() {
+		return btn;
 	}
 
 }

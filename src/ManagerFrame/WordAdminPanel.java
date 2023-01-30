@@ -121,4 +121,8 @@ public class WordAdminPanel extends JPanel {
 		return wordList;
 	}
 
+	public JTextField[] getInputTxt() {
+		return inputTxt;
+	}
+
 }
