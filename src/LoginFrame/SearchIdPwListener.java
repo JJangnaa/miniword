@@ -88,27 +88,26 @@ public class SearchIdPwListener extends KeyAdapter implements ActionListener {
 	}
 	
 	// return(true): pw X & id O
-		// return(false): pw O & id X
-		public boolean selectedRaBtn(JRadioButton [] selIdPwBtn) {
-			boolean judge = true;
-			if(selIdPwBtn[0].isSelected() == true) {
-				// PW 라디오버튼이 선택되어 있으면(= ID 라디오버튼은 선택X) false 리턴.
-				judge = false;
-			} // else { // PW 라디오버튼이 선택되어 있지 않으면(= ID 라디오버튼은 선택O) true 리턴.}
-			
-			return judge;
-		}
+	// return(false): pw O & id X
+	public boolean selectedRaBtn(JRadioButton [] selIdPwBtn) {
+		boolean judge = true;
+		if(selIdPwBtn[0].isSelected() == true) {
+			// PW 라디오버튼이 선택되어 있으면(= ID 라디오버튼은 선택X) false 리턴.
+			judge = false;
+		} // else { // PW 라디오버튼이 선택되어 있지 않으면(= ID 라디오버튼은 선택O) true 리턴.}
 		
-		public void reset() {
-			// 화면 초기화
-			wantTxt[0].setText("");
-			wantTxt[1].setText("");
-			selIdPwBtn[0].setSelected(true);
-			QnALabel[1].setBounds(40, 80, 150, 20);
-			wantTxt[0].setBounds(130, 83, 150, 20);
-			QnALabel[2].setVisible(true);
-			wantTxt[1].setVisible(true);
-			QnALabel[3].setText("-");
-		}
+		return judge;
+	}
+	// 화면 초기화
+	public void reset() {
+		wantTxt[0].setText("");
+		wantTxt[1].setText("");
+		selIdPwBtn[0].setSelected(true);
+		QnALabel[1].setBounds(40, 80, 150, 20);
+		wantTxt[0].setBounds(130, 83, 150, 20);
+		QnALabel[2].setVisible(true);
+		wantTxt[1].setVisible(true);
+		QnALabel[3].setText("-");
+	}
 		
 }
